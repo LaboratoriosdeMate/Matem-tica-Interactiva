@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratorios de Mate · Recursos interactivos</title>
+<style>
+:root{
+  --navy:#071d33;--navy2:#0d416d;--paper:#f2f7fa;--card:#ffffff;--line:#c8d8e4;
+  --blue:#0566ff;--green:#00a651;--orange:#ff6500;--violet:#7b20d4;--red:#ef1746;--yellow:#ffd400;
+  --ink:#07131f;--muted:#53687a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--paper);color:var(--ink)}
+body{padding-bottom:24px}
+header{
+  background:linear-gradient(110deg,var(--navy),var(--navy2));
+  color:#fff;padding:24px 18px 28px;text-align:center
+}
+header h1{font-size:34px;margin:0 0 8px}
+header p{margin:0;color:#dceefa;font-size:18px}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 16px}
+.hero{
+  background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 20px;
+  box-shadow:0 6px 20px #0b2b4314;margin-bottom:18px;text-align:center
+}
+.hero h2{margin:0 0 8px;color:var(--navy);font-size:26px}
+.hero p{margin:0;color:var(--muted);font-size:16px;line-height:1.45}
+.grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px
+}
+.card{
+  background:var(--card);border:2px solid var(--line);border-radius:18px;overflow:hidden;
+  box-shadow:0 5px 18px #10294412;display:flex;flex-direction:column;min-height:255px
+}
+.card .top{padding:16px 16px 12px;color:white}
+.card h3{margin:0;font-size:23px}
+.card .level{margin-top:5px;font-size:14px;font-weight:700;opacity:.95}
+.card .body{padding:15px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card p{margin:0;color:var(--muted);line-height:1.4;font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{background:#eef5f9;border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:12px;font-weight:800;color:var(--navy)}
+.open{
+  margin-top:auto;display:block;text-decoration:none;text-align:center;color:#fff;
+  border-radius:10px;padding:11px 10px;font-size:16px;font-weight:900
+}
+.blue .top,.blue .open{background:var(--blue)}
+.green .top,.green .open{background:var(--green)}
+.orange .top,.orange .open{background:var(--orange)}
+.violet .top,.violet .open{background:var(--violet)}
+.red .top,.red .open{background:var(--red)}
+.soon{opacity:.66}
+.soon .open{background:#788896;pointer-events:none}
+footer{max-width:1180px;margin:20px auto 0;padding:0 16px;text-align:center;color:var(--muted);font-size:14px}
+.note{
+  margin-top:18px;background:#fff8dc;border-left:7px solid var(--yellow);
+  padding:12px 14px;border-radius:10px;color:#3b4d5c;line-height:1.4
+}
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  header{padding:18px 12px 20px}
+  header h1{font-size:27px;line-height:1.08}
+  header p{font-size:15px;line-height:1.3}
+  .wrap{width:100%;max-width:100%;padding:12px 8px}
+  .hero{padding:14px 11px;margin-bottom:12px;border-radius:14px}
+  .hero h2{font-size:21px;line-height:1.15}
+  .hero p{font-size:14px}
+  .grid{grid-template-columns:minmax(0,1fr);gap:10px;width:100%}
+  .card{min-width:0;width:100%;min-height:0;border-radius:14px}
+  .card .top{padding:13px 12px 10px}
+  .card h3{font-size:20px;overflow-wrap:anywhere}
+  .card .body{padding:12px;min-width:0}
+  .card p{font-size:14px;overflow-wrap:anywhere}
+  .tags{max-width:100%}
+  .tag{font-size:11px}
+  .open{width:100%;padding:12px 8px}
+  .note{margin-top:12px;padding:10px;font-size:13px}
+  footer{padding:0 10px;font-size:12px}
+}
+@media(max-width:360px){
+  header h1{font-size:24px}
+  .card h3{font-size:18px}
+  .hero h2{font-size:19px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Laboratorios de Mate</h1>
+  <p>Recursos interactivos de Matemática · Prof. Roman Ruiz C.</p>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <h2>Explora Matemática de forma visual e interactiva</h2>
+    <p>Selecciona un laboratorio. Los recursos están diseñados para proyectarse en clase y también para abrirse desde teléfonos móviles.</p>
+  </section>
+
+  <section class="grid">
+    <article class="card violet">
+      <div class="top">
+        <h3>Secciones Cónicas 3D</h3>
+        <div class="level">Undécimo año</div>
+      </div>
+      <div class="body">
+        <p>Manipula un plano que corta un cono sencillo o doble y observa circunferencia, elipse, parábola e hipérbola.</p>
+        <div class="tags"><span class="tag">Three.js</span><span class="tag">3D</span><span class="tag">Manipulable</span></div>
+        <a class="open" href="Laboratorio_3D_Secciones_Conicas_Cono_Sencillo_y_Doble.html">Abrir laboratorio</a>
+      </div>
+    </article>
+
+    <article class="card blue soon">
+      <div class="top">
+        <h3>Teorema de Thales 3D</h3>
+        <div class="level">Octavo año</div>
+      </div>
+      <div class="body">
+        <p>Figuras triangulares y tipo escalera, proporciones, manipulación y evaluación visual.</p>
+        <div class="tags"><span class="tag">Three.js</span><span class="tag">Proporcionalidad</span></div>
+        <span class="open">Próximamente</span>
+      </div>
+    </article>
+
+    <article class="card green soon">
+      <div class="top">
+        <h3>Estadística 3D</h3>
+        <div class="level">Décimo año</div>
+      </div>
+      <div class="body">
+        <p>Distribuciones, media, mediana, cuartiles, asimetría, diagrama de cajas y gráfico de campana.</p>
+        <div class="tags"><span class="tag">Estadística</span><span class="tag">Gráficos</span></div>
+        <span class="open">Próximamente</span>
+      </div>
+    </article>
+
+    <article class="card orange soon">
+      <div class="top">
+        <h3>Variabilidad 3D</h3>
+        <div class="level">Undécimo año</div>
+      </div>
+      <div class="body">
+        <p>Rango, RIC, varianza, desviación estándar y comparación de conjuntos con la misma media.</p>
+        <div class="tags"><span class="tag">Dispersión</span><span class="tag">Cuartiles</span></div>
+        <span class="open">Próximamente</span>
+      </div>
+    </article>
+
+    <article class="card red soon">
+      <div class="top">
+        <h3>Sólidos 3D</h3>
+        <div class="level">Geometría</div>
+      </div>
+      <div class="body">
+        <p>Cubo, prismas, pirámides, cilindro, cono y esfera con elementos resaltados y exploración tridimensional.</p>
+        <div class="tags"><span class="tag">Sólidos</span><span class="tag">Elementos</span></div>
+        <span class="open">Próximamente</span>
+      </div>
+    </article>
+
+    <article class="card blue soon">
+      <div class="top">
+        <h3>Polígonos Regulares</h3>
+        <div class="level">Décimo año</div>
+      </div>
+      <div class="body">
+        <p>Exploración de lados, apotema, diagonales, perímetro, área y ángulos.</p>
+        <div class="tags"><span class="tag">Polígonos</span><span class="tag">Dinámico</span></div>
+        <span class="open">Próximamente</span>
+      </div>
+    </article>
+  </section>
+
+  <div class="note">
+    <b>Consejo para estudiantes:</b> para una mejor experiencia en el teléfono, usa la orientación horizontal y activa pantalla completa cuando el laboratorio lo permita.
+  </div>
+</div>
+
+<footer>
+  CTP de Carrillo y CTP de Cartagena · Recursos educativos de Matemática
+</footer>
+</body>
+</html>
