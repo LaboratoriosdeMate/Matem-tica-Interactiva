@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=yes">
+<meta name="theme-color" content="#073b66">
+<title>Variabilidad · CTP de Carrillo</title>
+<style>
+:root{--navy:#073b66;--blue:#087ca7;--green:#16845b;--violet:#7054b8;--orange:#e57c28;--red:#b83a4b;--ink:#15232e;--muted:#5b6d7a;--paper:#f3f8fb;--line:#cbdde8;--white:#fff;--pale:#eaf7fb;--yellow:#fff4c8}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+body{min-height:100vh}
+.app{max-width:680px;margin:auto;min-height:100vh;background:#fff}
+.hero{background:linear-gradient(145deg,#073b66,#087ca7 60%,#16a085);color:#fff;padding:22px 18px 28px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:190px;height:190px;border:28px solid #ffffff18;border-radius:50%;right:-70px;top:-70px}
+.kicker{font-size:14px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#cceefa}
+.hero h1{font-size:clamp(36px,11vw,58px);line-height:.95;margin:12px 0 8px}
+.hero h2{font-size:20px;margin:0 0 16px;font-weight:700;color:#e8fbff}
+.teacher{display:inline-block;background:#ffffff1c;border:1px solid #ffffff55;border-radius:999px;padding:8px 11px;font-size:14px;font-weight:800}
+.heroStats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}
+.heroStats div{background:#ffffff18;border:1px solid #ffffff3d;border-radius:12px;padding:10px 6px;text-align:center}
+.heroStats b{display:block;font-size:22px}.heroStats span{font-size:12px}
+main{padding:12px}
+.card{border:2px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px;background:#fff;box-shadow:0 4px 14px #17364c0d}
+.intro{margin-top:-16px;position:relative}
+h3{margin:0 0 10px;color:var(--navy);font-size:21px}
+p{line-height:1.45}
+.tags{display:flex;gap:7px;flex-wrap:wrap}.tag{background:var(--pale);color:var(--navy);border-radius:999px;padding:7px 9px;font-size:13px;font-weight:800}
+.field{margin:10px 0}label{font-weight:900;color:var(--navy)}
+input[type=text],.num{width:100%;margin-top:6px;border:2px solid var(--line);border-radius:12px;padding:13px;font-size:18px;background:#fff}
+button{border:0;border-radius:13px;padding:14px 16px;font-size:17px;font-weight:900;cursor:pointer;width:100%}
+.start,.next,.finish{background:var(--green);color:#fff}.back{background:#e4edf3;color:var(--navy)}.new{background:var(--violet);color:#fff}
+#activity{display:none}
+.sticky{position:sticky;top:0;background:#ffffffee;backdrop-filter:blur(7px);z-index:10;padding:9px 12px;border-bottom:1px solid var(--line)}
+.progress{height:10px;background:#dce9ef;border-radius:10px;overflow:hidden}.bar{height:100%;background:var(--green);width:10%;transition:.25s}
+.meta{display:flex;justify-content:space-between;font-size:13px;font-weight:900;color:var(--navy);margin-bottom:7px}
+.qcard{padding:18px 15px 16px}
+.qtitle{font-size:14px;font-weight:900;color:var(--blue);text-transform:uppercase;letter-spacing:.06em}
+.statement{font-size:20px;line-height:1.42;font-weight:800;margin:10px 0 13px}
+.tableWrap{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:360px;font-size:16px}
+th,td{border:1px solid var(--line);padding:9px;text-align:center}th{background:var(--navy);color:#fff}
+.chart{display:flex;align-items:end;justify-content:center;gap:10px;height:160px;border-left:2px solid #789;border-bottom:2px solid #789;padding:10px 8px 0;margin:15px 6px 25px}
+.barItem{width:35px;background:linear-gradient(#1a98c5,#087ca7);position:relative;border-radius:5px 5px 0 0}
+.barItem span{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:800}.barItem b{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:12px}
+.opts{display:grid;gap:9px}.opt{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--line);padding:12px;border-radius:13px;font-size:17px;line-height:1.3}.opt input{transform:scale(1.25);margin-top:4px}
+.hint{background:var(--yellow);border-left:6px solid #d2a900;border-radius:10px;padding:10px;font-size:14px;margin:12px 0}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.nav.one{grid-template-columns:1fr}
+.feedback{display:none;border-radius:12px;padding:11px;margin-top:12px;font-weight:800;line-height:1.4}.ok{display:block;background:#e2f5ea;color:#126b41;border-left:6px solid var(--green)}.bad{display:block;background:#fde9ec;color:#8c2837;border-left:6px solid var(--red)}
+#result{display:none;text-align:center}.score{font-size:58px;font-weight:900;color:var(--green)}.pill{display:inline-block;background:var(--yellow);padding:7px 12px;border-radius:999px;font-weight:900;color:#725800}
+.review{text-align:left;margin-top:12px}.review div{padding:9px;border-bottom:1px solid var(--line)}
+footer{text-align:center;padding:18px;color:var(--muted);font-size:12px}
+@media(max-width:420px){main{padding:8px}.hero{padding:18px 14px 25px}.statement{font-size:18px}.card{padding:13px}.nav{grid-template-columns:1fr}.heroStats span{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="cover">
+ <div class="hero">
+   <div class="kicker">CTP de Carrillo · Matemática · Undécimo año</div>
+   <h1>VARIABILIDAD</h1>
+   <h2>Actividad interactiva · Analizar, calcular e interpretar datos</h2>
+   <div class="teacher">Prof. Roman Ruiz C.</div>
+   <div class="heroStats"><div><b>10</b><span>retos</span></div><div><b>1</b><span>por pantalla</span></div><div><b>100%</b><span>móvil</span></div></div>
+ </div>
+ <main>
+  <div class="card intro">
+   <h3>📊 Misión estadística</h3>
+   <p>Resolverás situaciones relacionadas con datos de Filadelfia y comunidades cercanas. No basta con calcular: también deberás <b>interpretar qué significa la variabilidad</b>.</p>
+   <div class="tags"><span class="tag">Recorrido</span><span class="tag">Cuartiles</span><span class="tag">RIQ</span><span class="tag">Comparación</span><span class="tag">Interpretación</span></div>
+  </div>
+  <div class="card">
+   <h3>Antes de comenzar</h3>
+   <div class="field"><label>Nombre del estudiante<input id="student" type="text" placeholder="Escriba su nombre"></label></div>
+   <div class="field"><label>Sección<input id="section" type="text" placeholder="Ej. 11-1"></label></div>
+   <div class="hint">🎲 Los valores de varios ejercicios cambian al generar una nueva versión. Puedes usar papel y calculadora cuando sea necesario.</div>
+   <button class="start" onclick="start()">▶ Comenzar actividad</button>
+  </div>
+ </main>
+</section>
+
+<section id="activity">
+ <div class="sticky"><div class="meta"><span id="counter">Reto 1 de 10</span><span id="answered">0 respondidos</span></div><div class="progress"><div id="pbar" class="bar"></div></div></div>
+ <main><div id="question" class="card qcard"></div></main>
+</section>
+
+<section id="result">
+ <div class="hero"><div class="kicker">Actividad finalizada</div><h1>RESULTADOS</h1><h2 id="studentResult"></h2></div>
+ <main>
+  <div class="card"><div class="pill">PUNTUACIÓN</div><div id="score" class="score">0/10</div><h3 id="grade"></h3><p id="msg"></p></div>
+  <div class="card"><h3>Revisión</h3><div id="review" class="review"></div></div>
+  <div class="nav"><button class="back" onclick="reviewAgain()">Revisar actividad</button><button class="new" onclick="newVersion()">🎲 Nueva versión</button></div>
+ </main>
+</section>
+<footer>CTP de Carrillo · Departamento de Matemática · Prof. Roman Ruiz C.</footer>
+</div>
+
+<script>
+let qs=[], current=0, answers=Array(10).fill(null), graded=false;
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const mean=a=>sum(a)/a.length;
+const fmt=n=>Number.isInteger(n)?String(n):String(Math.round(n*100)/100).replace(".",",");
+function table(vals){return `<div class="tableWrap"><table><tr>${vals.map((_,i)=>`<th>Dato ${i+1}</th>`).join("")}</tr><tr>${vals.map(v=>`<td>${v}</td>`).join("")}</tr></table></div>`}
+function freqTable(vals,fs){return `<div class="tableWrap"><table><tr><th>Valor</th>${vals.map(v=>`<th>${v}</th>`).join("")}</tr><tr><th>Frecuencia</th>${fs.map(v=>`<td>${v}</td>`).join("")}</tr></table></div>`}
+function chart(vals,fs){let m=Math.max(...fs);return `<div class="chart">${fs.map((f,i)=>`<div class="barItem" style="height:${25+105*f/m}px"><b>${f}</b><span>${vals[i]}</span></div>`).join("")}</div>`}
+function mc(correct, distractors){let vals=[correct,...distractors].sort(()=>Math.random()-.5),letters=["A","B","C"],ans="";let opts=vals.map((v,i)=>{if(v===correct)ans=letters[i];return `${letters[i]}) ${v}`});return {opts,ans}}
+function generate(){
+ qs=[];
+ let base=rnd(8,15), vals=[base,base+2,base+4,base+7,base+10]; let R=vals.at(-1)-vals[0]; let o=mc(`${R}`, [`${R+2}`,`${R-2}`]);
+ qs.push({type:"mc",q:`Los siguientes datos representan tiempos, en minutos, empleados por cinco estudiantes para llegar al CTP de Carrillo. ¿Cuál es el recorrido?`,visual:table(vals),opts:o.opts,ans:o.ans,exp:`Recorrido = máximo − mínimo = ${vals.at(-1)} − ${vals[0]} = ${R}.`});
+ vals=[rnd(10,14),rnd(16,19),rnd(21,24),rnd(27,30),rnd(33,36)].sort((a,b)=>a-b); R=vals.at(-1)-vals[0];
+ qs.push({type:"num",q:"Durante una actividad en Filadelfia se registraron cinco tiempos de atención, en minutos. Calcule el recorrido de los datos.",visual:table(vals),ans:R,exp:`R = ${vals.at(-1)} − ${vals[0]} = ${R}.`});
+ let a=rnd(5,9); vals=[a,a+2,a+4,a+6,a+8,a+10,a+12]; let q1=(vals[0]+vals[1])/2, q3=(vals[4]+vals[5])/2, riq=q3-q1;
+ qs.push({type:"num",q:"Los datos ya están ordenados. Utilice los cuartiles para calcular el rango intercuartílico (RIQ).",visual:table(vals),ans:riq,exp:`Q₁ = (${vals[0]}+${vals[1]})/2 = ${fmt(q1)}; Q₃ = (${vals[4]}+${vals[5]})/2 = ${fmt(q3)}; RIQ = Q₃−Q₁ = ${fmt(riq)}.`});
+ let A=[18,19,20,21,22], B=[10,15,20,25,30]; o=mc("Conjunto B",["Conjunto A","Tienen igual variabilidad"]);
+ qs.push({type:"mc",q:"Compare los dos conjuntos. ¿Cuál presenta mayor variabilidad?",visual:`<b>A:</b>${table(A)}<b>B:</b>${table(B)}`,opts:o.opts,ans:o.ans,exp:"A tiene recorrido 4; B tiene recorrido 20. Por lo tanto, B presenta mayor dispersión."});
+ let fvals=[1,2,3,4,5], fs=[1,3,5,3,1]; o=mc("Aproximadamente simétrica",["Asimetría positiva","Asimetría negativa"]);
+ qs.push({type:"mc",q:"Observe la distribución de frecuencias. ¿Cómo describiría su forma?",visual:freqTable(fvals,fs)+chart(fvals,fs),opts:o.opts,ans:o.ans,exp:"Las frecuencias se distribuyen de manera equilibrada a ambos lados del centro; la forma es aproximadamente simétrica."});
+ vals=[12,13,13,14,15,16,38]; o=mc("La media",["La mediana","El mínimo"]);
+ qs.push({type:"mc",q:"Un valor extremo de 38 aparece en el conjunto. ¿Cuál medida de centro se verá más afectada por ese valor?",visual:table(vals),opts:o.opts,ans:o.ans,exp:"La media utiliza todos los valores y es sensible a valores extremos; la mediana suele ser más resistente."});
+ let r1=rnd(4,7), r2=r1+rnd(8,12); o=mc("Mayor dispersión",["Menor dispersión","No se puede comparar"]);
+ qs.push({type:"mc",q:`Un conjunto tiene recorrido ${r1} y otro recorrido ${r2}. ¿Qué puede afirmarse del segundo conjunto, considerando solamente esta medida?`,visual:"",opts:o.opts,ans:o.ans,exp:`Como ${r2} > ${r1}, el segundo conjunto tiene mayor amplitud total de los datos.`});
+ vals=[20,22,24,26,28,30,32,34]; q1=(22+24)/2; q3=(30+32)/2; riq=q3-q1;
+ qs.push({type:"num",q:"Para los siguientes ocho datos ordenados, calcule el RIQ usando la mediana de cada mitad.",visual:table(vals),ans:riq,exp:`Mitad inferior: 20,22,24,26 → Q₁=(22+24)/2=23. Mitad superior: 28,30,32,34 → Q₃=(30+32)/2=31. RIQ=8.`});
+ fvals=[2,4,6,8,12,20]; fs=[1,1,2,5,3,1]; o=mc("Asimetría positiva",["Simétrica","Asimetría negativa"]);
+ qs.push({type:"mc",q:"Analice el gráfico. La mayor concentración está en valores bajos-medios y existe una extensión hacia valores altos. ¿Qué tipo de asimetría se observa?",visual:freqTable(fvals,fs)+chart(fvals,fs),opts:o.opts,ans:o.ans,exp:"La cola se extiende hacia valores altos; por eso corresponde a asimetría positiva (hacia la derecha)."});
+ A=[45,46,47,48,49]; B=[30,40,47,54,61]; o=mc("A es más homogéneo",["B es más homogéneo","Ambos son igual de homogéneos"]);
+ qs.push({type:"mc",q:"Dos grupos obtuvieron resultados con centros semejantes, pero distinta dispersión. ¿Cuál grupo es más homogéneo?",visual:`<b>Grupo A</b>${table(A)}<b>Grupo B</b>${table(B)}`,opts:o.opts,ans:o.ans,exp:"El grupo A tiene los datos mucho más concentrados; por ello presenta menor variabilidad y es más homogéneo."});
+}
+function start(){generate();answers=Array(10).fill(null);current=0;graded=false;document.getElementById("cover").style.display="none";document.getElementById("activity").style.display="block";render()}
+function render(){
+ let q=qs[current], saved=answers[current], input="";
+ if(q.type==="mc") input=`<div class="opts">${q.opts.map(o=>{let L=o[0];return `<label class="opt"><input type="radio" name="ans" value="${L}" ${saved===L?"checked":""} onchange="saveMC(this.value)"><span>${o}</span></label>`}).join("")}</div>`;
+ else input=`<label>Respuesta numérica<input class="num" id="numAns" inputmode="decimal" value="${saved??""}" placeholder="Escriba el valor" oninput="saveNum(this.value)"></label>`;
+ let fb=""; if(graded){let ok=isCorrect(current);fb=`<div class="feedback ${ok?"ok":"bad"}">${ok?"✓ Correcto. ":"✗ Revise. "}${q.exp}</div>`}
+ document.getElementById("question").innerHTML=`<div class="qtitle">Reto ${current+1}</div><div class="statement">${q.q}</div>${q.visual||""}${input}${fb}<div class="nav ${current===0?"one":""}">${current>0?'<button class="back" onclick="prev()">← Anterior</button>':""}<button class="${current===9?"finish":"next"}" onclick="${current===9?"finish()":"next()"}">${current===9?"Calificar actividad ✓":"Siguiente →"}</button></div>`;
+ document.getElementById("counter").textContent=`Reto ${current+1} de 10`;document.getElementById("pbar").style.width=`${(current+1)*10}%`;updateAnswered();window.scrollTo({top:0,behavior:"smooth"})
+}
+function saveMC(v){answers[current]=v;updateAnswered()} function saveNum(v){let s=v.trim().replace(",",".");answers[current]=s===""?null:Number(s);updateAnswered()}
+function updateAnswered(){document.getElementById("answered").textContent=`${answers.filter(x=>x!==null).length} respondidos`}
+function next(){current++;render()} function prev(){current--;render()}
+function isCorrect(i){let q=qs[i],a=answers[i];return q.type==="mc"?a===q.ans:(a!==null&&Math.abs(a-q.ans)<.02)}
+function finish(){
+ graded=true;let correct=qs.reduce((n,_,i)=>n+(isCorrect(i)?1:0),0),pct=correct*10;
+ document.getElementById("activity").style.display="none";document.getElementById("result").style.display="block";
+ document.getElementById("score").textContent=`${correct}/10`;document.getElementById("grade").textContent=`Nota: ${pct}`;
+ let name=document.getElementById("student").value.trim()||"Estudiante";document.getElementById("studentResult").textContent=name;
+ document.getElementById("msg").textContent=pct>=80?"Muy buen análisis de la variabilidad.":pct>=60?"Buen avance. Conviene revisar los retos señalados.":"Repase recorrido, cuartiles, RIQ e interpretación de la dispersión.";
+ document.getElementById("review").innerHTML=qs.map((q,i)=>`<div><b>Reto ${i+1}:</b> ${isCorrect(i)?"✓ correcto":"✗ por revisar"}<br><small>${q.exp}</small></div>`).join("");
+ window.scrollTo({top:0,behavior:"smooth"})
+}
+function reviewAgain(){document.getElementById("result").style.display="none";document.getElementById("activity").style.display="block";current=0;render()}
+function newVersion(){generate();answers=Array(10).fill(null);graded=false;current=0;document.getElementById("result").style.display="none";document.getElementById("activity").style.display="block";render()}
+</script>
+</body>
+</html>
