@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#073b66">
+<title>Matemática Visual · Décimo Año · CTP de Carrillo</title>
+<style>
+:root{--nav:#073b66;--blue:#087ca7;--green:#16845b;--orange:#e57c28;--violet:#7054b8;--red:#b83a4b;--bg:#eef5f8;--line:#c9dce7;--ink:#142a36;--mut:#607580;--yellow:#fff3c5}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.app{max-width:820px;margin:auto;background:#fff;min-height:100vh}
+.hero{padding:26px 120px 30px 17px;background:linear-gradient(145deg,#073b66,#087ca7 60%,#16845b);color:#fff;position:relative;overflow:hidden}
+.crest{position:absolute;top:14px;right:14px;width:92px;height:92px;object-fit:contain;background:#fff;border-radius:12px;padding:4px;box-shadow:0 3px 10px #0003}
+.hero small{font-weight:900;letter-spacing:.07em} .hero h1{font-size:clamp(40px,11vw,66px);line-height:.92;margin:11px 0 8px}
+.hero p{font-size:18px;line-height:1.35;margin:0 0 12px} .prof{display:inline-block;border:1px solid #ffffff66;background:#ffffff18;border-radius:999px;padding:8px 11px;font-weight:900}
+main{padding:10px} .card{border:2px solid var(--line);border-radius:18px;padding:15px;margin:11px 0;background:#fff;box-shadow:0 5px 16px #17364c0b}
+h2,h3{color:var(--nav);margin-top:0} p{line-height:1.45}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:5px} .step{text-align:center;background:#e8f4f8;border-radius:11px;padding:8px 3px;font-size:10px;font-weight:900;color:var(--nav)} .step b{display:block;font-size:20px}
+.labs{display:grid;grid-template-columns:1fr 1fr;gap:10px} .lab{border:2px solid var(--line);border-radius:17px;padding:14px;background:#fff}
+.lab .icon{font-size:31px} .lab p{font-size:13px;color:var(--mut);min-height:58px} .badge{display:inline-block;background:#edf5f7;color:var(--nav);font-size:10px;font-weight:900;border-radius:999px;padding:5px 7px;margin:2px}
+.open{width:100%;border:0;border-radius:11px;padding:12px;background:var(--green);color:#fff;font-weight:900;font-size:14px;margin-top:8px}
+.open.orange{background:var(--orange)} .open.violet{background:var(--violet)} .open.blue{background:var(--blue)}
+.labview{display:none} .labview.show{display:block} .labhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px} .close{border:0;border-radius:10px;padding:8px 10px;background:#e5eef3;color:var(--nav);font-weight:900}
+.stage{border:2px solid var(--line);border-radius:16px;padding:12px;background:#fbfdfe} .tip{background:var(--yellow);border-left:6px solid #c99d00;border-radius:10px;padding:10px;font-size:14px}
+.metricGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px} .metric{text-align:center;border:2px solid var(--line);border-radius:12px;padding:9px} .metric span{font-size:11px;color:var(--mut);font-weight:900} .metric b{display:block;font-size:22px;color:var(--nav)}
+input[type=range]{width:100%;accent-color:var(--green)} label{font-weight:900;color:var(--nav)} svg{width:100%;height:auto;display:block}
+.formula{text-align:center;font-size:23px;font-weight:900;color:var(--nav);padding:10px}
+.legend{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:900} .legend span{padding:6px 8px;border-radius:999px;background:#edf5f7}
+.cta{display:block;text-decoration:none;text-align:center;border-radius:12px;padding:13px;background:var(--green);color:#fff;font-weight:900;margin-top:12px}
+.homebar{position:sticky;top:0;z-index:20;display:flex;justify-content:flex-end;padding:7px 10px;background:#ffffffee;backdrop-filter:blur(7px);border-bottom:1px solid var(--line)}
+.homebtn{border:0;border-radius:999px;padding:10px 14px;background:var(--nav);color:#fff;font-weight:900;font-size:14px;box-shadow:0 3px 10px #0002}
+.homebtn:active{transform:scale(.98)}
+footer{text-align:center;color:var(--mut);padding:20px 10px;font-size:12px}
+@media(max-width:540px){.hero{padding:22px 92px 26px 14px}.crest{width:72px;height:72px;top:11px;right:10px}.labs{grid-template-columns:1fr}.steps{grid-template-columns:repeat(5,1fr)}.step{font-size:9px}.metricGrid{grid-template-columns:1fr 1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+<img class="crest" src="data:image/jpeg;base64,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" alt="Escudo del CTP de Carrillo">
+<small>CTP DE CARRILLO · MATEMÁTICA · DÉCIMO AÑO</small>
+<h1>MATEMÁTICA<br>VISUAL</h1>
+<p>Explora una muestra funcional de cuatro laboratorios para Décimo año.</p>
+<span class="prof">Prof. Roman Ruiz C.</span>
+</header>
+<div class="homebar"><button class="homebtn" onclick="goHome()">⌂ Volver al inicio</button></div>
+
+<main>
+<div class="card">
+<h2>Ruta de aprendizaje</h2>
+<div class="steps"><div class="step"><b>👆</b>EXPLORA</div><div class="step"><b>👀</b>DESCUBRE</div><div class="step"><b>∑</b>FORMALIZA</div><div class="step"><b>🧩</b>APLICA</div><div class="step"><b>🏁</b>RETO</div></div>
+<p>En esta muestra, cada laboratorio permite manipular una idea matemática antes de formalizarla.</p>
+</div>
+
+<div class="card">
+<h2>Laboratorios de Décimo año</h2>
+<div class="labs">
+  <div class="lab"><div class="icon">📊</div><h3>Estadística Visual</h3><p>Media, mediana, moda, cuartiles, valores extremos y asimetría.</p><span class="badge">Estadística</span><span class="badge">Interactivo</span><button class="open" data-lab="stats">Explorar</button></div>
+  <div class="lab"><div class="icon">⬡</div><h3>Polígonos dinámicos</h3><p>Cambia el número de lados y observa ángulos, perímetro y área de un polígono regular.</p><span class="badge">Geometría</span><span class="badge">SVG</span><button class="open orange" data-lab="poly">Explorar</button></div>
+  <div class="lab"><div class="icon">🧊</div><h3>Sólidos y secciones</h3><p>Explora un cilindro y mueve un plano de corte para interpretar sus secciones.</p><span class="badge">Geometría 3D</span><span class="badge">Visual</span><button class="open violet" data-lab="solid">Explorar</button></div>
+  <div class="lab"><div class="icon">📈</div><h3>Funciones en movimiento</h3><p>Modifica la pendiente y la intersección para ver cómo cambia una función lineal.</p><span class="badge">Álgebra</span><span class="badge">Gráfico</span><button class="open blue" data-lab="func">Explorar</button></div>
+</div>
+</div>
+
+<section id="stats" class="card labview">
+<div class="labhead"><div><small>LABORATORIO 1</small><h2>📊 Estadística Visual</h2></div><button class="close">✕</button></div>
+<div class="stage">
+<div class="tip"><b>EXPLORA:</b> este laboratorio ya está publicado y permite manipular datos, frecuencias y asimetría.</div>
+<div class="metricGrid"><div class="metric"><span>MEDIA</span><b>x̄</b></div><div class="metric"><span>MEDIANA</span><b>Me</b></div><div class="metric"><span>MODA</span><b>Mo</b></div></div>
+<div class="formula">Mo &lt; Me &lt; x̄ &nbsp; · &nbsp; x̄ ≈ Me ≈ Mo &nbsp; · &nbsp; x̄ &lt; Me &lt; Mo</div>
+<a class="cta" target="_blank" href="https://laboratoriosdemate.github.io/Matem-tica-Interactiva/Laboratorio_Matematica_Visual_Estadistica_Decimo_CTP_Carrillo_v2.html">Abrir laboratorio completo ↗</a>
+</div></section>
+
+<section id="poly" class="card labview">
+<div class="labhead"><div><small>LABORATORIO 2</small><h2>⬡ Polígonos dinámicos</h2></div><button class="close">✕</button></div>
+<div class="stage">
+<div class="tip"><b>EXPLORA:</b> cambia el número de lados del polígono regular.</div>
+<label>Número de lados: <span id="nVal">6</span></label><input id="nRange" type="range" min="3" max="12" value="6">
+<svg id="polySvg" viewBox="0 0 360 310" aria-label="Polígono regular interactivo"></svg>
+<div class="metricGrid"><div class="metric"><span>ÁNGULO CENTRAL</span><b id="central"></b></div><div class="metric"><span>ÁNGULO INTERIOR</span><b id="interior"></b></div><div class="metric"><span>N.º DIAGONALES</span><b id="diags"></b></div></div>
+<div class="tip"><b>FORMALIZA:</b> ángulo central = 360°/n; ángulo interior = (n−2)180°/n; diagonales = n(n−3)/2.</div>
+</div></section>
+
+<section id="solid" class="card labview">
+<div class="labhead"><div><small>LABORATORIO 3</small><h2>🧊 Cilindro y secciones</h2></div><button class="close">✕</button></div>
+<div class="stage">
+<div class="tip"><b>EXPLORA:</b> mueve el plano de corte. La altura cambia, pero una sección paralela a la base conserva su forma circular.</div>
+<label>Altura del corte: <span id="cutVal">50</span>%</label><input id="cutRange" type="range" min="10" max="90" value="50">
+<svg viewBox="0 0 360 330">
+<ellipse cx="180" cy="60" rx="95" ry="28" fill="#dff4f5" stroke="#073b66" stroke-width="4"/>
+<line x1="85" y1="60" x2="85" y2="265" stroke="#073b66" stroke-width="4"/>
+<line x1="275" y1="60" x2="275" y2="265" stroke="#073b66" stroke-width="4"/>
+<ellipse cx="180" cy="265" rx="95" ry="28" fill="#eaf5ef" stroke="#073b66" stroke-width="4"/>
+<ellipse id="cutEllipse" cx="180" cy="162" rx="95" ry="28" fill="#ffe2b7" fill-opacity=".75" stroke="#e57c28" stroke-width="5"/>
+<text id="cutText" x="180" y="168" text-anchor="middle" font-weight="bold">sección circular</text>
+</svg>
+<div class="metricGrid"><div class="metric"><span>SECCIÓN</span><b>Círculo</b></div><div class="metric"><span>PLANO</span><b>Paralelo</b></div><div class="metric"><span>BASE</span><b>Circular</b></div></div>
+<div class="tip"><b>DESCUBRE:</b> todo corte paralelo a la base de un cilindro circular recto produce una sección circular congruente con la base.</div>
+</div></section>
+
+<section id="func" class="card labview">
+<div class="labhead"><div><small>LABORATORIO 4</small><h2>📈 Funciones en movimiento</h2></div><button class="close">✕</button></div>
+<div class="stage">
+<div class="tip"><b>EXPLORA:</b> modifica m y b en y = mx + b.</div>
+<label>Pendiente m: <span id="mVal">1</span></label><input id="mRange" type="range" min="-4" max="4" step="0.5" value="1">
+<label>Intersección b: <span id="bVal">0</span></label><input id="bRange" type="range" min="-5" max="5" step="1" value="0">
+<svg id="funcSvg" viewBox="0 0 360 300" aria-label="Gráfico interactivo de una función lineal"></svg>
+<div class="metricGrid"><div class="metric"><span>PENDIENTE</span><b id="mMetric">1</b></div><div class="metric"><span>CORTE EN y</span><b id="bMetric">0</b></div><div class="metric"><span>COMPORTAMIENTO</span><b id="behavior" style="font-size:16px">Creciente</b></div></div>
+<div class="formula" id="funcFormula">y = x</div>
+<div class="tip"><b>DESCUBRE:</b> el signo de m determina si la recta crece o decrece; b indica dónde corta el eje y.</div>
+</div></section>
+</main>
+<footer>Prototipo funcional · Matemática Visual · Décimo Año · CTP de Carrillo</footer>
+</div>
+
+<script>
+const views=[...document.querySelectorAll(".labview")];
+document.querySelectorAll("[data-lab]").forEach(btn=>btn.addEventListener("click",()=>{views.forEach(v=>v.classList.remove("show"));document.getElementById(btn.dataset.lab).classList.add("show");document.getElementById(btn.dataset.lab).scrollIntoView({behavior:"smooth"})}));
+document.querySelectorAll(".close").forEach(btn=>btn.addEventListener("click",()=>btn.closest(".labview").classList.remove("show")));
+
+function drawPolygon(){
+ const n=+nRange.value,cx=180,cy=150,r=105,pts=[];
+ for(let i=0;i<n;i++){let a=-Math.PI/2+i*2*Math.PI/n;pts.push([cx+r*Math.cos(a),cy+r*Math.sin(a)])}
+ let path=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ")+" Z";
+ let spokes=pts.map(p=>`<line x1="${cx}" y1="${cy}" x2="${p[0]}" y2="${p[1]}" stroke="#9ac9da" stroke-width="2"/>`).join("");
+ polySvg.innerHTML=`${spokes}<path d="${path}" fill="#e5f4f8" stroke="#087ca7" stroke-width="5"/><circle cx="${cx}" cy="${cy}" r="5" fill="#e57c28"/><text x="${cx}" y="292" text-anchor="middle" font-weight="bold">${n} lados</text>`;
+ nVal.textContent=n;central.textContent=(360/n).toFixed(n===7||n===9||n===11?1:0)+"°";interior.textContent=(((n-2)*180)/n).toFixed(n===7||n===9||n===11?1:0)+"°";diags.textContent=n*(n-3)/2;
+}
+nRange.addEventListener("input",drawPolygon);drawPolygon();
+
+function updateCut(){let v=+cutRange.value,y=60+(265-60)*(v/100);cutEllipse.setAttribute("cy",y);cutText.setAttribute("y",y+6);cutVal.textContent=v}
+cutRange.addEventListener("input",updateCut);updateCut();
+
+function drawFunction(){
+ let m=+mRange.value,b=+bRange.value,W=360,H=300,cx=180,cy=150,s=28;
+ let x1=-6,x2=6,y1=m*x1+b,y2=m*x2+b;
+ let sx=x=>cx+x*s, sy=y=>cy-y*s;
+ let grid=""; for(let i=-5;i<=5;i++){grid+=`<line x1="${sx(i)}" y1="10" x2="${sx(i)}" y2="290" stroke="#dbe7ec"/><line x1="10" y1="${sy(i)}" x2="350" y2="${sy(i)}" stroke="#dbe7ec"/>`}
+ funcSvg.innerHTML=`${grid}<line x1="10" y1="${cy}" x2="350" y2="${cy}" stroke="#073b66" stroke-width="3"/><line x1="${cx}" y1="10" x2="${cx}" y2="290" stroke="#073b66" stroke-width="3"/><line x1="${sx(x1)}" y1="${sy(y1)}" x2="${sx(x2)}" y2="${sy(y2)}" stroke="#e57c28" stroke-width="5"/>`;
+ mVal.textContent=m;bVal.textContent=b;mMetric.textContent=m;bMetric.textContent=b;behavior.textContent=m>0?"Creciente":m<0?"Decreciente":"Constante";
+ funcFormula.textContent=`y = ${m}x ${b>=0?"+ ":"− "}${Math.abs(b)}`;
+}
+mRange.addEventListener("input",drawFunction);bRange.addEventListener("input",drawFunction);drawFunction();
+
+function goHome(){
+  document.querySelectorAll(".labview").forEach(v=>v.classList.remove("show"));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+</script>
+</body></html>
