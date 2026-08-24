@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matemática Visual · Álgebra · Octavo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#eef5f8;color:#17303d}.app{max-width:760px;margin:auto;background:#fff;min-height:100vh}
+.hero{padding:24px 16px 28px;background:linear-gradient(140deg,#123b5d,#19789c,#2d9b88);color:white}.hero h1{font-size:42px;line-height:.95;margin:10px 0}.prof{display:inline-block;border:1px solid #ffffff77;border-radius:30px;padding:8px 11px;font-weight:bold}
+.nav{display:none;position:sticky;top:0;z-index:8;gap:6px;justify-content:flex-end;padding:7px 10px;background:#fffffff0;border-bottom:1px solid #cadde7}.nav button{border:0;border-radius:25px;padding:10px 12px;background:#123b5d;color:white;font-weight:bold}.nav .back{background:#657985}
+main{padding:9px}.card{border:2px solid #cadde7;border-radius:18px;padding:15px;margin:10px 0}h2,h3{color:#123b5d}.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.step{text-align:center;background:#e8f4f8;border-radius:10px;padding:8px 3px;font-size:10px;font-weight:bold}.step b{display:block;font-size:19px}
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:8px}.topic{border:2px solid #cadde7;border-radius:15px;padding:13px}.topic .ico{font-size:30px}.topic p{font-size:13px;min-height:52px}.topic button,.action{width:100%;border:0;border-radius:10px;padding:11px;background:#2d9b88;color:#fff;font-weight:bold}
+.page{display:none}.page.on{display:block}.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:10px 0}.tabs button{border:0;border-radius:9px;padding:9px 3px;background:#e7eef2;color:#123b5d;font-weight:bold;font-size:10px}.tabs .on{background:#123b5d;color:white}.stage{display:none}.stage.on{display:block}
+.tip{background:#fff4cf;border-left:6px solid #c99d00;padding:10px;border-radius:10px}.formula{text-align:center;font-size:22px;font-weight:bold;color:#123b5d;padding:10px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.m{text-align:center;border:2px solid #cadde7;border-radius:10px;padding:8px}.m small{font-weight:bold;color:#657985}.m b{display:block;font-size:21px;color:#123b5d}.chips{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.chip{background:#e8f4f8;border-radius:9px;padding:9px;font-weight:bold;color:#123b5d}
+input[type=range]{width:100%;accent-color:#2d9b88}.choice{display:block;width:100%;margin:7px 0;border:2px solid #cadde7;border-radius:10px;padding:11px;background:#fff;text-align:left;font-weight:bold}.good{background:#e2f4e9!important}.bad{background:#fbe8eb!important}.feedback{display:none;padding:9px;border-radius:9px;margin-top:8px;font-weight:bold}.feedback.show{display:block}.rectwrap{display:flex;justify-content:center;align-items:center;min-height:220px}.rect{position:relative;background:#e8f5f7;border:4px solid #2d9b88}.top{position:absolute;top:-27px;left:50%;transform:translateX(-50%);font-weight:bold}.side{position:absolute;right:-60px;top:50%;transform:translateY(-50%);font-weight:bold}.hidden{display:none}
+@media(max-width:520px){.topics{grid-template-columns:1fr}.tabs button,.step{font-size:9px}.hero h1{font-size:36px}}
+</style></head><body><div class="app">
+<header class="hero"><b>CTP DE CARTAGENA · MATEMÁTICA · OCTAVO AÑO</b><h1>MATEMÁTICA<br>VISUAL</h1><p>Expresiones algebraicas, potencias y productos notables</p><span class="prof">Prof. Roman Ruiz C.</span></header>
+<div id="nav" class="nav"><button class="back" onclick="back()">← Regresar</button><button onclick="home()">⌂ Inicio</button></div>
+<main><section id="landing"><div class="card"><h2>Ruta de aprendizaje</h2><div class="steps"><div class="step"><b>👆</b>EXPLORA</div><div class="step"><b>👀</b>DESCUBRE</div><div class="step"><b>∑</b>FORMALIZA</div><div class="step"><b>🧩</b>APLICA</div><div class="step"><b>🏁</b>RETO</div></div></div>
+<div class="card"><h2>Unidad · Relaciones y Álgebra</h2><div class="topics">
+<div class="topic"><div class="ico">🔤</div><h3>Expresiones algebraicas</h3><p>Elementos, clasificación y términos semejantes.</p><button onclick="openTopic('expr')">Explorar</button></div>
+<div class="topic"><div class="ico">⚡</div><h3>Potencias y valor numérico</h3><p>Leyes de potencias y sustitución.</p><button onclick="openTopic('pow')">Explorar</button></div>
+<div class="topic"><div class="ico">➕</div><h3>Monomios y polinomios</h3><p>Operaciones y reducción de términos.</p><button onclick="openTopic('poly')">Explorar</button></div>
+<div class="topic"><div class="ico">🟧</div><h3>Productos notables y modelación</h3><p>Patrones algebraicos y áreas.</p><button onclick="openTopic('prod')">Explorar</button></div>
+</div></div></section>
+
+<section id="topic" class="page card"><h2 id="title"></h2><p id="intro"></p><div class="tabs">
+<button class="on" onclick="show(0)">Explora</button><button onclick="show(1)">Descubre</button><button onclick="show(2)">Formaliza</button><button onclick="show(3)">Aplica</button><button onclick="show(4)">Reto</button></div>
+<div id="s0" class="stage on"></div><div id="s1" class="stage"></div><div id="s2" class="stage"></div><div id="s3" class="stage"></div><div id="s4" class="stage"></div></section>
+</main></div>
+<script>
+const C={
+expr:["🔤 Expresiones algebraicas","Identifica elementos, clasifica expresiones y reconoce términos semejantes.",
+`<div class="tip"><b>EXPLORA:</b> observa el término.</div><div class="formula">−3x²</div><div class="metrics"><div class="m"><small>COEFICIENTE</small><b>−3</b></div><div class="m"><small>VARIABLE</small><b>x</b></div><div class="m"><small>EXPONENTE</small><b>2</b></div></div>`,
+`<div class="tip"><b>DESCUBRE:</b> los términos se separan por + o −.</div><div class="chips"><span class="chip">5x²</span><span class="chip">x+4</span><span class="chip">x²+2x+1</span></div><div class="formula">1 monomio · 2 binomio · 3 trinomio</div>`,
+`<div class="tip"><b>FORMALIZA:</b> son semejantes si tienen las mismas variables con los mismos exponentes.</div><div class="formula">4x y 7x ✓ &nbsp; 4x y 7x² ✗</div>`,
+`<div class="formula">5x²+3x−2x²+7x−4</div><button class="action" onclick="this.nextElementSibling.classList.remove('hidden')">Mostrar solución</button><div class="hidden formula">3x²+10x−4</div>`,
+`<div class="tip"><b>RETO:</b> 4x²−3x+7 es:</div><button class="choice" onclick="judge(this,0,'f1')">Monomio</button><button class="choice" onclick="judge(this,0,'f1')">Binomio</button><button class="choice" onclick="judge(this,1,'f1')">Trinomio</button><div id="f1" class="feedback"></div>`],
+pow:["⚡ Potencias y valor numérico","Aplica leyes de potencias y calcula valores numéricos.",
+`<div class="tip"><b>EXPLORA:</b> mueve los exponentes.</div><label>m=<b id="mv">3</b></label><input id="mr" type="range" min="1" max="7" value="3"><label>n=<b id="nv">2</b></label><input id="nr" type="range" min="1" max="7" value="2"><div id="peq" class="formula"></div>`,
+`<div class="formula">aᵐ·aⁿ=aᵐ⁺ⁿ &nbsp; | &nbsp; aᵐ/aⁿ=aᵐ⁻ⁿ</div>`,
+`<div class="formula">(aᵐ)ⁿ=aᵐⁿ</div><div class="tip">Las bases diferentes no se combinan como si fueran iguales.</div>`,
+`<div class="tip"><b>APLICA:</b> 2x²−3x+1</div><label>x=<b id="xv">2</b></label><input id="xr" type="range" min="-3" max="5" value="2"><div id="veq" class="formula"></div>`,
+`<div class="tip"><b>RETO:</b> x⁸/x³ =</div><button class="choice" onclick="judge(this,1,'f2')">x⁵</button><button class="choice" onclick="judge(this,0,'f2')">x¹¹</button><button class="choice" onclick="judge(this,0,'f2')">x²⁴</button><div id="f2" class="feedback"></div>`],
+poly:["➕ Monomios y polinomios","Opera monomios y polinomios.",
+`<div class="formula">(3x²)(−2x³)</div><div class="metrics"><div class="m"><small>COEF.</small><b>−6</b></div><div class="m"><small>EXP.</small><b>2+3=5</b></div><div class="m"><small>RESULTADO</small><b>−6x⁵</b></div></div>`,
+`<div class="tip"><b>DESCUBRE:</b> al restar polinomios, el signo menos cambia cada signo del segundo polinomio.</div><div class="formula">(6a²+3a)−(2a²−a)=6a²+3a−2a²+a</div>`,
+`<div class="tip"><b>FORMALIZA:</b> suma/resta: agrupa semejantes. Multiplicación: cada término por cada término.</div>`,
+`<div class="formula">(x+3)(x+2)</div><button class="action" onclick="this.nextElementSibling.classList.remove('hidden')">Ver paso a paso</button><div class="hidden"><div class="formula">x²+2x+3x+6=x²+5x+6</div></div>`,
+`<div class="tip"><b>RETO:</b> (3x²)(2x³)=</div><button class="choice" onclick="judge(this,0,'f3')">5x⁵</button><button class="choice" onclick="judge(this,1,'f3')">6x⁵</button><button class="choice" onclick="judge(this,0,'f3')">6x⁶</button><div id="f3" class="feedback"></div>`],
+prod:["🟧 Productos notables y modelación","Reconoce patrones y modela áreas con expresiones.",
+`<div class="tip"><b>EXPLORA:</b> jardín rectangular en Cartagena.</div><label>x=<b id="jx">2</b></label><input id="jr" type="range" min="1" max="8" value="2"><div class="rectwrap"><div id="garden" class="rect"><span id="gt" class="top"></span><span id="gs" class="side"></span></div></div><div id="ga" class="formula"></div>`,
+`<div class="formula">A=(x+3)(x+2)=x²+5x+6</div><div class="tip">El modelo algebraico representa un área que cambia con x.</div>`,
+`<div class="formula">(a+b)²=a²+2ab+b²</div><div class="formula">(a−b)²=a²−2ab+b²</div><div class="formula">(a+b)(a−b)=a²−b²</div>`,
+`<div class="formula">(2y−3)²</div><button class="action" onclick="this.nextElementSibling.classList.remove('hidden')">Mostrar procedimiento</button><div class="hidden formula">4y²−12y+9</div>`,
+`<div class="tip"><b>RETO:</b> (y+5)(y−5)=</div><button class="choice" onclick="judge(this,1,'f4')">y²−25</button><button class="choice" onclick="judge(this,0,'f4')">y²+25</button><button class="choice" onclick="judge(this,0,'f4')">y²−10y+25</button><div id="f4" class="feedback"></div>`]
+};
+function home(){landing.style.display="block";topic.classList.remove("on");nav.style.display="none";scrollTo(0,0)}
+function back(){home()}
+function openTopic(k){landing.style.display="none";topic.classList.add("on");nav.style.display="flex";let d=C[k];title.textContent=d[0];intro.textContent=d[1];for(let i=0;i<5;i++)document.getElementById("s"+i).innerHTML=d[i+2];show(0);setTimeout(init,30);scrollTo(0,0)}
+function show(i){document.querySelectorAll(".stage").forEach((x,j)=>x.classList.toggle("on",i===j));document.querySelectorAll(".tabs button").forEach((x,j)=>x.classList.toggle("on",i===j));setTimeout(init,30)}
+function judge(b,ok,id){b.classList.add(ok?"good":"bad");let f=document.getElementById(id);f.className="feedback show";f.textContent=ok?"✓ Correcto.":"✗ Revisa el concepto y vuelve a intentarlo."}
+function init(){
+if(window.mr&&window.nr){let f=()=>{let m=+mr.value,n=+nr.value;mv.textContent=m;nv.textContent=n;peq.textContent=`x^${m} · x^${n} = x^${m+n}`};mr.oninput=f;nr.oninput=f;f()}
+if(window.xr){let f=()=>{let x=+xr.value;xv.textContent=x;veq.textContent=`2(${x})²−3(${x})+1 = ${2*x*x-3*x+1}`};xr.oninput=f;f()}
+if(window.jr){let f=()=>{let x=+jr.value;jx.textContent=x;garden.style.width=(130+12*x)+"px";garden.style.height=(90+9*x)+"px";gt.textContent=`x+3=${x+3} m`;gs.textContent=`x+2=${x+2} m`;ga.textContent=`A=${(x+3)*(x+2)} m²`};jr.oninput=f;f()}
+}}
+</script></body></html>
