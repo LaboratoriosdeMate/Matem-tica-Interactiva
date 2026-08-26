@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c4f68">
+<title>Matemática Visual · Estadística Décimo · CTP de Carrillo</title>
+<style>
+:root{--nav:#0c4f68;--green:#198c74;--blue:#1b7fa6;--gold:#d7a72c;--ink:#15313e;--mut:#607783;--bg:#edf5f7;--line:#c7dce5;--ok:#e2f5e9;--bad:#fde9e7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink);font-size:18px;line-height:1.5}
+.app{max-width:980px;margin:auto;background:white;min-height:100vh;box-shadow:0 0 28px #1232}
+.hero{padding:30px 18px;color:white;background:linear-gradient(145deg,#0b3650,#12738c 58%,#198c74)}
+.hero h1{font-size:clamp(42px,9vw,72px);line-height:.92;margin:10px 0}.hero p{max-width:760px;font-size:19px}
+.prof{display:inline-block;padding:8px 11px;border:1px solid #ffffff77;border-radius:999px;background:#ffffff18;font-weight:900}
+.wrap{padding:12px}.card{border:2px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;background:#fff;box-shadow:0 5px 15px #1231}
+h2,h3{color:var(--nav)}.topics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.topic{border:2px solid var(--line);border-radius:15px;padding:14px;background:#fbfdfe}
+.topic button,.primary{width:100%;border:0;border-radius:11px;padding:12px;background:var(--green);color:white;font-weight:900;font-size:16px}
+.route{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.route div{text-align:center;background:#e9f4f7;border-radius:11px;padding:9px 3px;font-size:11px;font-weight:900;color:var(--nav)}
+.route b{display:block;font-size:22px}.hidden{display:none}.nav{position:sticky;top:0;z-index:30;display:flex;justify-content:flex-end;gap:7px;padding:8px;background:#fffffff0;border-bottom:1px solid var(--line)}
+.nav button{border:0;border-radius:999px;padding:10px 13px;background:var(--nav);color:white;font-weight:900}.nav .back{background:#6d7f88}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:10px 0}.tabs button{border:0;border-radius:9px;padding:9px 3px;background:#e9eef1;color:var(--nav);font-weight:900;font-size:10px}.tabs button.on{background:var(--nav);color:white}
+.stage{display:none}.stage.on{display:block}.info{background:#eaf6f8;border-left:6px solid var(--blue);padding:11px;border-radius:10px;margin:10px 0}
+.tip{background:#fff3cf;border-left:6px solid var(--gold);padding:11px;border-radius:10px;margin:10px 0}.example{border:2px solid var(--line);border-radius:12px;padding:12px;margin:9px 0;background:#fafcfd}
+.step{display:block;margin:6px 0;padding:8px;border-radius:8px;background:#f4f8fa}.formula{text-align:center;font-size:24px;font-weight:900;color:var(--nav);padding:10px}
+.visual{border:2px dashed #9bc1d0;border-radius:13px;padding:12px;margin:10px 0;background:#fbfeff}
+.bar{height:31px;margin:8px 0;border-radius:7px;background:#9dd7e7;padding:4px 8px;font-weight:900;min-width:70px}
+.controls label{font-weight:900}input[type=range]{width:100%;accent-color:var(--green)}input[type=number]{width:100%;padding:10px;border:2px solid var(--line);border-radius:9px;font-size:18px}
+.choice{display:block;width:100%;text-align:left;border:2px solid var(--line);border-radius:11px;padding:13px;margin:7px 0;background:white;font-size:18px;font-weight:800}.choice.good{background:var(--ok);border-color:#6ab184}.choice.bad{background:var(--bad);border-color:#d28c87}
+.feedback{display:none;padding:10px;border-radius:9px;margin-top:7px;font-weight:800}.feedback.show{display:block}.feedback.ok{background:var(--ok);color:#17623d}.feedback.bad{background:var(--bad);color:#8c3029}
+.next{margin-top:13px;border-top:1px dashed var(--line);padding-top:12px}.next button{width:100%;border:0;border-radius:11px;padding:12px;background:var(--nav);color:white;font-weight:900}
+.progress{height:17px;background:#dfecef;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:var(--green);width:0}
+.distrow{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.dist{border:2px solid var(--line);border-radius:11px;padding:9px;text-align:center}
+.curve{height:120px;position:relative;border-bottom:2px solid #789}.curve svg{width:100%;height:100%}
+.score{position:sticky;top:58px;background:#fff3cf;border:2px solid #dec163;border-radius:11px;padding:10px;text-align:center;font-weight:900;margin:8px 0;z-index:10}
+textarea{width:100%;min-height:100px;padding:10px;border:2px solid var(--line);border-radius:10px;font:inherit}
+@media(max-width:640px){body{font-size:17px}.topics{grid-template-columns:1fr}.route div,.tabs button{font-size:9px}.distrow{grid-template-columns:1fr}}
+</style></head>
+<body><div class="app">
+<header class="hero">
+<b>CTP DE CARRILLO · DÉCIMO AÑO</b>
+<h1>MATEMÁTICA<br>VISUAL</h1>
+<p>Laboratorio interactivo de Estadística: datos y variables, representaciones, medidas estadísticas, cuartiles, asimetría y comprobación con tecnología.</p>
+<span class="prof">Prof. Roman Ruiz C.</span>
+</header>
+
+<div id="nav" class="nav hidden"><button class="back" onclick="goHome()">← Regresar</button><button onclick="goHome()">⌂ Inicio</button></div>
+<main class="wrap">
+<section id="home">
+<div class="card">
+<h2>🎯 Ruta de aprendizaje</h2>
+<div class="route"><div><b>👀</b>EXPLORA</div><div><b>🔎</b>DESCUBRE</div><div><b>∑</b>FORMALIZA</div><div><b>🧩</b>APLICA</div><div><b>🏁</b>RETO</div></div>
+<p>En cada tema encontrarás definición, explicación visual, ejemplos paso a paso, práctica y retroalimentación. Las consignas indican claramente qué debes hacer.</p>
+<div class="progress"><div id="prog"></div></div><p id="progText"></p>
+</div>
+<div id="topicGrid" class="topics"></div>
+</section>
+
+<section id="lesson" class="hidden">
+<div class="card"><h2 id="topicTitle"></h2><p id="topicDesc"></p><div id="tabs" class="tabs"></div></div>
+<div id="s0" class="stage"></div><div id="s1" class="stage"></div><div id="s2" class="stage"></div><div id="s3" class="stage"></div><div id="s4" class="stage"></div>
+<div class="next"><button id="nextBtn" onclick="nextStage()">Continuar →</button></div>
+</section>
+
+<section id="challenge" class="hidden">
+<div class="card"><h2>🏁 Reto integrador · 15 ejercicios</h2>
+<div class="tip"><b>Instrucciones:</b> Lee completamente cada enunciado. Realiza el cálculo o análisis solicitado antes de seleccionar una opción. En cada ejercicio solamente una respuesta es correcta.</div>
+<div id="score" class="score">Puntuación: 0 / 15 · Respondidos: 0 / 15</div>
+<div id="quiz"></div>
+<div class="card"><h3>🗣️ Cierre metacognitivo</h3><p><b>Explique con sus propias palabras</b> qué idea de Estadística le resultó más útil y por qué.</p><textarea id="reflection"></textarea><button class="primary" onclick="saveReflection()">Guardar reflexión</button><div id="refmsg" class="feedback"></div></div>
+</div>
+</section>
+</main>
+<footer class="wrap" style="text-align:center;color:#607783;font-size:13px">Matemática Visual · Estadística Décimo · CTP de Carrillo</footer>
+</div>
+
+<script>
+const TOPICS=[{"id": "variables", "title": "Datos y variables", "desc": "Clasifica variables cualitativas, cuantitativas, nominales y ordinales."}, {"id": "representaciones", "title": "Tablas y representaciones", "desc": "Trabaja frecuencias, porcentajes, gráficos de barras, sectores, barra apilada y pictogramas."}, {"id": "medidas", "title": "Medidas estadísticas", "desc": "Calcula e interpreta moda, media, mediana, mínimo, máximo, recorrido y cuartiles."}, {"id": "asimetria", "title": "Distribución y asimetría", "desc": "Relaciona forma, cola, valores extremos y ubicación de media, mediana y moda."}, {"id": "tecnologia", "title": "Uso de tecnología", "desc": "Comprende cómo comprobar resultados con calculadora o computadora."}];
+const QUESTIONS=[{"topic": "variables", "q": "En una encuesta del CTP de Carrillo se registra el medio de transporte que utiliza cada estudiante para llegar al colegio. Seleccione la clasificación correcta de esta variable.", "opts": ["Cualitativa nominal", "Cualitativa ordinal", "Cuantitativa continua"], "a": 0, "fb": "Son categorías sin un orden natural."}, {"topic": "variables", "q": "El estudiantado califica una actividad como excelente, buena, regular o deficiente. Seleccione la clasificación correcta de la variable.", "opts": ["Cualitativa nominal", "Cualitativa ordinal", "Cuantitativa discreta"], "a": 1, "fb": "Las categorías pueden ordenarse."}, {"topic": "representaciones", "q": "Una asociación comunal desea comparar la cantidad de participantes inscritos en cuatro talleres. Seleccione la representación que facilita mejor esa comparación.", "opts": ["Gráfico de barras", "Gráfico circular sin porcentajes", "Lista de nombres"], "a": 0, "fb": "El gráfico de barras facilita comparar frecuencias entre categorías."}, {"topic": "representaciones", "q": "De 40 estudiantes, 18 utilizan autobús. Calcule el porcentaje que representa esta categoría y seleccione la opción correcta.", "opts": ["18 %", "45 %", "55 %"], "a": 1, "fb": "18/40 × 100 = 45 %."}, {"topic": "representaciones", "q": "Si 8 de 40 estudiantes usan bicicleta, calcule el ángulo del sector correspondiente en un gráfico circular y seleccione la respuesta correcta.", "opts": ["72°", "80°", "90°"], "a": 0, "fb": "8/40 × 360° = 72°."}, {"topic": "medidas", "q": "Considere los datos ordenados 7, 9, 10, 10, 12, 14, 18. Determine la mediana y seleccione la opción correcta.", "opts": ["9", "10", "12"], "a": 1, "fb": "Hay 7 datos; la mediana es el cuarto dato."}, {"topic": "medidas", "q": "Si el valor mínimo es 12 y el máximo es 47, calcule el recorrido y seleccione la opción correcta.", "opts": ["35", "47", "59"], "a": 0, "fb": "R = 47 − 12 = 35."}, {"topic": "medidas", "q": "En los datos 5, 6, 6, 7, 8, 8, 9 se agrega por error el valor 80. Seleccione la medida que será más afectada.", "opts": ["Media aritmética", "Mediana", "Moda"], "a": 0, "fb": "La media es más sensible a valores extremos."}, {"topic": "medidas", "q": "En un estudio se obtuvo Q3 = 28 minutos. Seleccione la interpretación correcta.", "opts": ["Todos los tiempos son 28", "Aproximadamente 75 % de los tiempos está en o por debajo de 28", "28 % de los tiempos está sobre la media"], "a": 1, "fb": "Q3 corresponde aproximadamente al 75 % acumulado."}, {"topic": "asimetria", "q": "En una distribución unimodal se cumple Mo < Me < media. Seleccione el tipo de asimetría esperado.", "opts": ["Asimetría positiva", "Asimetría negativa", "Distribución simétrica"], "a": 0, "fb": "La media se desplaza hacia la cola derecha."}, {"topic": "asimetria", "q": "Si media < mediana < moda, seleccione hacia dónde se prolonga la cola.", "opts": ["Hacia la derecha", "Hacia la izquierda", "Ambos lados por igual"], "a": 1, "fb": "Corresponde a asimetría negativa."}, {"topic": "asimetria", "q": "En una distribución simétrica y unimodal, seleccione la relación aproximada más razonable entre las medidas.", "opts": ["Mo ≈ Me ≈ media", "Mo < Me < media", "media < Me < Mo"], "a": 0, "fb": "Las tres medidas se encuentran próximas al centro."}, {"topic": "asimetria", "q": "La mayoría de los datos se concentra en valores bajos y existen pocos valores muy altos. Seleccione la forma aproximada de la distribución.", "opts": ["Asimetría positiva", "Asimetría negativa", "Simétrica"], "a": 0, "fb": "Los valores altos forman una cola hacia la derecha."}, {"topic": "tecnologia", "q": "Después de ingresar los datos en STAT o 1-Var, seleccione la acción más adecuada antes de aceptar los resultados.", "opts": ["Aceptar cualquier resultado", "Comparar los resultados con una estimación y revisar posibles errores", "Borrar los datos"], "a": 1, "fb": "La guía recomienda comprobar los resultados."}, {"topic": "representaciones", "q": "Si el objetivo es comunicar qué porcentaje del total representa cada categoría, seleccione la representación especialmente apropiada.", "opts": ["Gráfico circular", "Gráfico de dispersión", "Gráfico de líneas temporales"], "a": 0, "fb": "El gráfico circular comunica partes de un mismo total."}];
+const visited=new Set(JSON.parse(localStorage.getItem("mv_estadistica_carrillo_visited")||"[]"));
+let current=null, stage=0, correct=0, answered=new Set();
+
+const LESSONS={
+variables:[
+`<div class="card"><h2>👀 Explora</h2><div class="info"><b>Tema: Datos y variables estadísticas.</b><br>Un dato estadístico es información obtenida al observar, medir o preguntar una característica. La característica estudiada se denomina <b>variable estadística</b>.</div>
+<div class="example"><b>Ejemplo 1 · Medio de transporte.</b><span class="step">Paso 1. Las respuestas posibles son autobús, bicicleta, automóvil o a pie.</span><span class="step">Paso 2. Son categorías, no cantidades.</span><span class="step">Paso 3. No tienen un orden natural.</span><div class="formula">Conclusión: cualitativa nominal.</div></div>
+<div class="example"><b>Ejemplo 2 · Valoración de una actividad.</b><span class="step">Paso 1. Las categorías son excelente, buena, regular y deficiente.</span><span class="step">Paso 2. Son cualitativas.</span><span class="step">Paso 3. Sí pueden ordenarse.</span><div class="formula">Conclusión: cualitativa ordinal.</div></div></div>`,
+`<div class="card"><h2>🔎 Descubre</h2><div class="tip"><b>Pregunta guía:</b> antes de clasificar una variable, pregúntate si describe una categoría o expresa una cantidad.</div>
+<div class="example"><b>Ejemplo 3 · Tiempo de traslado.</b><span class="step">Se registra en minutos.</span><span class="step">El dato expresa una cantidad numérica.</span><div class="formula">Conclusión: variable cuantitativa.</div></div>
+<div class="example"><b>Ejemplo 4 · Comunidad de residencia.</b><span class="step">Son nombres de lugares.</span><span class="step">No existe un orden natural entre comunidades.</span><div class="formula">Conclusión: cualitativa nominal.</div></div></div>`,
+`<div class="card"><h2>∑ Formaliza</h2><p><b>Cualitativa nominal:</b> categorías sin orden natural. <b>Cualitativa ordinal:</b> categorías con orden. <b>Cuantitativa:</b> expresa cantidades mediante números.</p>
+<div class="info"><b>Importante:</b> la media, la mediana y los cuartiles se calculan con datos cuantitativos. En una variable cualitativa nominal puede determinarse la moda, pero no tiene sentido calcular un promedio.</div></div>`,
+`<div class="card"><h2>🧩 Aplica</h2><p><b>Consigna:</b> clasifica cada caso siguiendo el procedimiento: categoría o cantidad → si es categoría, determina si existe orden.</p>
+<div class="example">Tipo de cultivo → cualitativa nominal.</div><div class="example">Cantidad de lluvia → cuantitativa.</div><div class="example">Opinión: excelente/buena/regular/deficiente → cualitativa ordinal.</div><div class="example">Número de libros leídos → cuantitativa.</div></div>`,
+`<div class="card"><h2>🏁 Cierre</h2><p>Explica con tus propias palabras la diferencia entre una variable cualitativa nominal y una cualitativa ordinal.</p></div>`
+],
+representaciones:[
+`<div class="card"><h2>👀 Explora</h2><div class="info"><b>Tema: Organización y representación de datos cualitativos.</b><br>Una tabla de frecuencias permite organizar datos y mostrar cuántas observaciones pertenecen a cada categoría.</div>
+<p>Ejemplo de la guía: 40 estudiantes del CTP de Carrillo.</p><div class="visual"><div class="bar" style="width:90%">Autobús 18</div><div class="bar" style="width:40%">Bicicleta 8</div><div class="bar" style="width:30%">A pie 6</div><div class="bar" style="width:40%">Auto/Moto 8</div></div></div>`,
+`<div class="card"><h2>🔎 Descubre</h2><div class="formula">hᵢ = fᵢ / n</div><div class="formula">Porcentaje = (fᵢ / n) × 100%</div>
+<div class="example"><b>Autobús.</b><span class="step">Paso 1. fᵢ=18 y n=40.</span><span class="step">Paso 2. 18/40=0,45.</span><span class="step">Paso 3. 0,45×100=45%.</span></div></div>`,
+`<div class="card"><h2>∑ Formaliza</h2><p><b>Tabla:</b> muestra cantidades exactas. <b>Barras:</b> compara frecuencias. <b>Circular:</b> comunica proporciones del total. <b>Barra apilada:</b> muestra composición del total. <b>Pictograma:</b> usa símbolos y clave.</p>
+<div class="formula">Ángulo del sector = (fᵢ / n) × 360°</div>
+<div class="info">La suma de frecuencias absolutas es n, la suma de frecuencias relativas es 1 y la suma de porcentajes es 100%.</div></div>`,
+`<div class="card"><h2>🧩 Aplica</h2><h3>Calculadora interactiva de frecuencia</h3><div class="controls"><label>Frecuencia de la categoría: <b id="fiVal">18</b></label><input id="fiRange" type="range" min="0" max="40" value="18"><label>Total n: 40</label></div><div id="freqOut" class="formula"></div>
+<div class="example"><b>Sector de bicicleta:</b><span class="step">fᵢ=8, n=40.</span><span class="step">(8/40)×360° = 72°.</span></div></div>`,
+`<div class="card"><h2>🏁 Cierre</h2><p>Indica qué representación elegirías para comparar cantidades entre categorías y cuál usarías para mostrar porcentajes de un total. Justifica ambas decisiones.</p></div>`
+],
+medidas:[
+`<div class="card"><h2>👀 Explora</h2><div class="info"><b>Tema: Medidas estadísticas.</b><br>Las medidas resumen un conjunto de datos mediante valores representativos o de posición.</div>
+<div class="visual"><b>Datos ordenados del ejemplo:</b><br>12, 14, 15, 15, 15, 16, 17, 18, 20, 22, 24<br><br>Mo=15 · Me=16 · media≈17,09</div></div>`,
+`<div class="card"><h2>🔎 Descubre</h2><p><b>Moda:</b> valor más frecuente. <b>Media:</b> suma de los datos dividida entre n. <b>Mediana:</b> centro de los datos ordenados. <b>Recorrido:</b> máximo−mínimo.</p>
+<div class="formula">x̄ = Σxᵢ / n</div><div class="formula">R = máximo − mínimo</div></div>`,
+`<div class="card"><h2>∑ Formaliza</h2><p>Los cuartiles dividen los datos ordenados en cuatro partes aproximadamente iguales.</p><div class="formula">P(Qₖ)=k(n+1)/4</div>
+<p>Q₁ ≈ 25%, Q₂ ≈ 50% y Q₃ ≈ 75% de los datos en o por debajo de esos valores.</p><div class="tip">Si la posición es decimal, la guía utiliza interpolación entre datos vecinos. Algunas calculadoras pueden usar métodos distintos.</div></div>`,
+`<div class="card"><h2>🧩 Aplica</h2><h3>Valor extremo y media</h3><p>Mueve el último dato y observa cómo cambia la media más que la mediana.</p><label>Último valor: <b id="outlierVal">9</b></label><input id="outlierRange" type="range" min="9" max="80" value="9"><div id="outlierOut" class="formula"></div>
+<div class="example"><b>Cuartiles con 11 datos.</b><span class="step">P(Q₁)=3 → Q₁=15.</span><span class="step">P(Q₂)=6 → Q₂=16.</span><span class="step">P(Q₃)=9 → Q₃=20.</span></div></div>`,
+`<div class="card"><h2>🏁 Cierre</h2><p>Explica por qué es necesario ordenar los datos antes de determinar la mediana y los cuartiles.</p></div>`
+],
+asimetria:[
+`<div class="card"><h2>👀 Explora</h2><div class="info"><b>Tema: Distribución y asimetría.</b><br>La asimetría describe hacia cuál lado se prolonga más una distribución. La parte alargada se llama cola.</div>
+<div class="distrow"><div class="dist">🔔<br><b>Simétrica</b><br>colas semejantes</div><div class="dist">➡️<br><b>Positiva</b><br>cola derecha</div><div class="dist">⬅️<br><b>Negativa</b><br>cola izquierda</div></div></div>`,
+`<div class="card"><h2>🔎 Descubre</h2><p>La media es la medida más sensible a valores extremos y suele desplazarse en dirección de la cola.</p>
+<div class="formula">Simétrica: Mo ≈ Me ≈ x̄</div><div class="formula">Positiva: Mo &lt; Me &lt; x̄</div><div class="formula">Negativa: x̄ &lt; Me &lt; Mo</div></div>`,
+`<div class="card"><h2>∑ Formaliza</h2><div class="step">1. Ordena los datos.</div><div class="step">2. Identifica posibles valores extremos.</div><div class="step">3. Observa una representación gráfica.</div><div class="step">4. Calcula media, mediana y moda.</div><div class="step">5. Compara la ubicación de las medidas.</div><div class="step">6. Observa la dirección de la cola.</div><div class="step">7. Formula una conclusión contextual.</div></div>`,
+`<div class="card"><h2>🧩 Aplica</h2><h3>Explorador de asimetría</h3><label>Desplaza la forma: izquierda ← <b id="skewVal">0</b> → derecha</label><input id="skewRange" type="range" min="-10" max="10" value="0"><div id="skewOut" class="visual"></div>
+<div class="example"><b>Ejemplo de Filadelfia.</b><span class="step">Mo=5, Me=6, x̄≈7,53.</span><span class="step">5&lt;6&lt;7,53.</span><span class="step">Conclusión: asimetría positiva.</span></div></div>`,
+`<div class="card"><h2>🏁 Cierre</h2><p>Explica por qué el nombre de la asimetría depende de la dirección de la cola y no del lugar donde se encuentra la parte más alta de la curva.</p></div>`
+],
+tecnologia:[
+`<div class="card"><h2>👀 Explora</h2><div class="info"><b>Tema: Uso de calculadora.</b><br>La tecnología permite obtener medidas estadísticas, pero debe utilizarse para comprobar y analizar, no para aceptar resultados sin revisión.</div></div>`,
+`<div class="card"><h2>🔎 Descubre</h2><div class="step">1. Ingresa al modo STAT o Estadística.</div><div class="step">2. Selecciona 1-Var.</div><div class="step">3. Escribe cada dato y confirma la entrada.</div><div class="step">4. Abre el menú de resultados estadísticos.</div></div>`,
+`<div class="card"><h2>∑ Formaliza</h2><p>Según el modelo, identifica n, x̄, mínimo, Q₁, mediana, Q₃ y máximo.</p><div class="tip">El procedimiento puede variar según la calculadora. La guía indica que los resultados deben compararse con una estimación y revisarse ante posibles errores.</div></div>`,
+`<div class="card"><h2>🧩 Aplica</h2><div class="example"><b>Comprobación responsable.</b><span class="step">Paso 1. Estima resultados razonables.</span><span class="step">Paso 2. Obtén las medidas con la calculadora.</span><span class="step">Paso 3. Compara ambos resultados.</span><span class="step">Paso 4. Si hay diferencias inesperadas, revisa los datos y el procedimiento.</span></div></div>`,
+`<div class="card"><h2>🏁 Cierre</h2><p>Escribe una razón por la cual no conviene aceptar automáticamente un resultado digital sin comprobarlo.</p></div>`
+]
+};
+
+function renderHome(){
+  const grid=document.getElementById("topicGrid");
+  grid.innerHTML=TOPICS.map((t,i)=>`<div class="topic"><h3>${i+1}. ${t.title}</h3><p>${t.desc}</p><button onclick="openTopic('${t.id}')">Entrar al tema</button></div>`).join("")+
+  `<div class="topic"><h3>🏁 Reto integrador</h3><p>15 ejercicios de selección única con retroalimentación inmediata.</p><button onclick="openChallenge()">Abrir reto</button></div>`;
+  document.getElementById("prog").style.width=(visited.size/5*100)+"%";
+  document.getElementById("progText").innerHTML="<b>Progreso:</b> "+visited.size+" de 5 temas visitados.";
+}
+function openTopic(k){
+ current=k;stage=0;visited.add(k);localStorage.setItem("mv_estadistica_carrillo_visited",JSON.stringify([...visited]));
+ document.getElementById("home").classList.add("hidden");document.getElementById("challenge").classList.add("hidden");document.getElementById("lesson").classList.remove("hidden");document.getElementById("nav").classList.remove("hidden");
+ let t=TOPICS.find(x=>x.id===k);document.getElementById("topicTitle").textContent=t.title;document.getElementById("topicDesc").textContent=t.desc;
+ LESSONS[k].forEach((c,i)=>document.getElementById("s"+i).innerHTML=c);renderStage();
+}
+function renderStage(){
+ document.querySelectorAll(".stage").forEach((x,i)=>x.classList.toggle("on",i===stage));
+ document.getElementById("tabs").innerHTML=["Explora","Descubre","Formaliza","Aplica","Reto"].map((n,i)=>`<button class="${i===stage?"on":""}" onclick="stage=${i};renderStage()">${n}</button>`).join("");
+ document.getElementById("nextBtn").textContent=stage<4?"Continuar al inicio de "+["Descubre","Formaliza","Aplica","Reto"][stage]:"Ir al reto integrador";
+ setTimeout(initInteractive,20);
+}
+function nextStage(){if(stage<4){stage++;renderStage();document.getElementById("s"+stage).scrollIntoView({behavior:"smooth",block:"start"})}else openChallenge()}
+function goHome(){document.getElementById("lesson").classList.add("hidden");document.getElementById("challenge").classList.add("hidden");document.getElementById("home").classList.remove("hidden");document.getElementById("nav").classList.add("hidden");renderHome();window.scrollTo(0,0)}
+function openChallenge(){document.getElementById("home").classList.add("hidden");document.getElementById("lesson").classList.add("hidden");document.getElementById("challenge").classList.remove("hidden");document.getElementById("nav").classList.remove("hidden");correct=0;answered=new Set();renderQuiz();window.scrollTo(0,0)}
+function renderQuiz(){
+ document.getElementById("score").textContent="Puntuación: 0 / 15 · Respondidos: 0 / 15";
+ document.getElementById("quiz").innerHTML=QUESTIONS.map((q,i)=>`<div class="example"><h3>${i+1}. ${q.q}</h3>${q.opts.map((o,j)=>`<button class="choice" onclick="answer(${i},${j},this)">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}<div id="fb${i}" class="feedback"></div></div>`).join("");
+}
+function answer(i,j,b){
+ if(answered.has(i))return;answered.add(i);let q=QUESTIONS[i],ok=j===q.a;if(ok)correct++;
+ let box=b.parentElement;box.querySelectorAll(".choice").forEach(x=>x.classList.remove("good","bad"));b.classList.add(ok?"good":"bad");if(!ok)box.querySelectorAll(".choice")[q.a].classList.add("good");
+ let f=document.getElementById("fb"+i);f.className="feedback show "+(ok?"ok":"bad");f.textContent=(ok?"✓ Correcto. ":"Revisa tu procedimiento. ")+q.fb;
+ document.getElementById("score").textContent=`Puntuación: ${correct} / 15 · Respondidos: ${answered.size} / 15`;
+}
+function saveReflection(){localStorage.setItem("mv_estadistica_carrillo_reflection",document.getElementById("reflection").value);let m=document.getElementById("refmsg");m.className="feedback show ok";m.textContent="✓ Reflexión guardada en este dispositivo.";}
+function initInteractive(){
+ if(window.fiRange){let f=()=>{let fi=+fiRange.value;fiVal.textContent=fi;freqOut.innerHTML=`hᵢ = ${fi}/40 = ${(fi/40).toFixed(2)} &nbsp;&nbsp; | &nbsp;&nbsp; Porcentaje = ${(fi/40*100).toFixed(1)}% &nbsp;&nbsp; | &nbsp;&nbsp; Ángulo = ${(fi/40*360).toFixed(1)}°`;};fiRange.oninput=f;f();}
+ if(window.outlierRange){let f=()=>{let v=+outlierRange.value;outlierVal.textContent=v;let a=[5,6,6,7,8,8,v].sort((x,y)=>x-y);let mean=a.reduce((x,y)=>x+y,0)/a.length;let med=a[Math.floor(a.length/2)];outlierOut.innerHTML=`Datos: ${a.join(", ")}<br>Media = ${mean.toFixed(2)} &nbsp;&nbsp; | &nbsp;&nbsp; Mediana = ${med}`;};outlierRange.oninput=f;f();}
+ if(window.skewRange){let f=()=>{let v=+skewRange.value;skewVal.textContent=v;let type=v>2?"Asimetría positiva · cola hacia la derecha":v<-2?"Asimetría negativa · cola hacia la izquierda":"Distribución aproximadamente simétrica";let relation=v>2?"Mo < Me < x̄":v<-2?"x̄ < Me < Mo":"Mo ≈ Me ≈ x̄";skewOut.innerHTML=`<h3>${type}</h3><div class="formula">${relation}</div><p>El control representa de forma conceptual hacia qué lado se prolonga la cola.</p>`;};skewRange.oninput=f;f();}
+}
+renderHome();
+</script></body></html>
