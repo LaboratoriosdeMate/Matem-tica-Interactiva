@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio Virtual de Álgebra - CTP de Cartagena</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        ctp: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0066cc',
+                            600: '#0052a3',
+                            700: '#003d7a',
+                            800: '#002952',
+                            900: '#001429',
+                            gold: '#f59e0b',
+                            emerald: '#10b981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .tile-anim {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- BARRA SUPERIOR INSTITUCIONAL -->
+    <header class="bg-gradient-to-r from-ctp-900 via-ctp-700 to-ctp-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center border border-white/20 backdrop-blur-sm shadow-inner">
+                    <i class="fa-solid fa-shapes text-ctp-gold text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight leading-tight flex items-center gap-2">
+                        CTP de Cartagena <span class="text-xs bg-ctp-gold/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full font-semibold">8.° Año</span>
+                    </h1>
+                    <p class="text-xs text-slate-200">Laboratorio Teórico-Práctico: Álgebra, Potencias y Productos Notables</p>
+                </div>
+            </div>
+
+            <!-- Registro de Estudiante -->
+            <div class="flex items-center gap-3 bg-white/10 px-3 py-1.5 rounded-xl border border-white/15">
+                <div class="text-right text-xs">
+                    <span class="block text-slate-300">Estudiante:</span>
+                    <input type="text" id="studentName" placeholder="Tu nombre..." class="bg-transparent text-white font-semibold outline-none text-xs w-32 sm:w-44 placeholder:text-slate-400 border-b border-white/30 focus:border-amber-300 transition-colors">
+                </div>
+                <div class="text-right text-xs">
+                    <span class="block text-slate-300">Sección:</span>
+                    <input type="text" id="studentSection" placeholder="8-1" class="bg-transparent text-white font-semibold outline-none text-xs w-12 placeholder:text-slate-400 border-b border-white/30 focus:border-amber-300 transition-colors">
+                </div>
+                <button onclick="playBeep(600)" id="soundToggle" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 flex items-center justify-center text-amber-300 transition-colors" title="Efectos de sonido activos">
+                    <i class="fa-solid fa-volume-high text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navegación de Pestañas -->
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto gap-1 border-t border-white/10 text-sm font-medium custom-scrollbar">
+            <button onclick="switchTab('tiles')" id="tab-tiles" class="tab-btn py-2.5 px-4 text-white border-b-2 border-amber-400 bg-white/10 rounded-t-lg transition flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-table-cells text-amber-300"></i> 1. Bloques de Área (Tiles)
+            </button>
+            <button onclick="switchTab('clasificacion')" id="tab-clasificacion" class="tab-btn py-2.5 px-4 text-slate-300 hover:text-white hover:bg-white/5 border-b-2 border-transparent transition flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-layer-group text-sky-300"></i> 2. Términos y Clasificación
+            </button>
+            <button onclick="switchTab('potencias')" id="tab-potencias" class="tab-btn py-2.5 px-4 text-slate-300 hover:text-white hover:bg-white/5 border-b-2 border-transparent transition flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-bolt text-yellow-300"></i> 3. Leyes de Potencias
+            </button>
+            <button onclick="switchTab('valor')" id="tab-valor" class="tab-btn py-2.5 px-4 text-slate-300 hover:text-white hover:bg-white/5 border-b-2 border-transparent transition flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-calculator text-emerald-300"></i> 4. Valor Numérico & STEAM
+            </button>
+            <button onclick="switchTab('notables')" id="tab-notables" class="tab-btn py-2.5 px-4 text-slate-300 hover:text-white hover:bg-white/5 border-b-2 border-transparent transition flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-cube text-purple-300"></i> 5. Productos Notables
+            </button>
+            <button onclick="switchTab('proyectos')" id="tab-proyectos" class="tab-btn py-2.5 px-4 text-slate-300 hover:text-white hover:bg-white/5 border-b-2 border-transparent transition flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-seedling text-lime-300"></i> 6. Proyectos Cartagena
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn py-2.5 px-4 text-slate-300 hover:text-white hover:bg-white/5 border-b-2 border-transparent transition flex items-center gap-2 shrink-0">
+                <i class="fa-solid fa-circle-check text-rose-300"></i> 7. Reto & Reporte
+            </button>
+        </nav>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- ========================================================================= -->
+        <!-- MÓDULO 1: SIMULADOR INTERACTIVO DE ALGEBRA TILES -->
+        <!-- ========================================================================= -->
+        <section id="module-tiles" class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-ctp-500 bg-blue-50 px-2.5 py-1 rounded-md">Geometría y Álgebra Concreta</span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Laboratorio Visual de Bloques Algebraicos</h2>
+                        <p class="text-sm text-slate-600">Representa geométricamente la multiplicación de polinomios como el área total de un rectángulo compuesto.</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-200 text-xs">
+                        <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-blue-500 rounded-sm inline-block"></span> x² (Azul)</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-emerald-500 rounded-sm inline-block"></span> x (Verde)</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-amber-400 rounded-sm inline-block"></span> 1 (Naranja)</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+                    <!-- Controles -->
+                    <div class="lg:col-span-4 space-y-5 bg-slate-50 p-5 rounded-xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-ctp-500"></i> Parámetros de los Factores
+                        </h3>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Unidades adicionales de Largo (a): <span id="label-a" class="text-ctp-600 font-bold">3</span></label>
+                            <input type="range" id="slider-a" min="1" max="6" value="3" class="w-full accent-ctp-500" oninput="updateTiles()">
+                            <p class="text-xs text-slate-500 mt-0.5">Dimensión: <span class="font-mono font-bold text-slate-700" id="factor-1">(x + 3)</span></p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Unidades adicionales de Ancho (b): <span id="label-b" class="text-ctp-600 font-bold">2</span></label>
+                            <input type="range" id="slider-b" min="1" max="6" value="2" class="w-full accent-ctp-500" oninput="updateTiles()">
+                            <p class="text-xs text-slate-500 mt-0.5">Dimensión: <span class="font-mono font-bold text-slate-700" id="factor-2">(x + 2)</span></p>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-200">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1 flex justify-between">
+                                <span>Asignar valor real a x:</span>
+                                <span class="text-emerald-700 font-bold font-mono text-sm" id="label-x">x = 3 cm</span>
+                            </label>
+                            <input type="range" id="slider-x" min="1" max="10" value="3" class="w-full accent-emerald-600" oninput="updateTiles()">
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2 text-xs">
+                            <div class="text-slate-500 font-medium">Desglose de Piezas:</div>
+                            <div class="grid grid-cols-3 gap-2 text-center font-mono">
+                                <div class="bg-blue-50 border border-blue-200 p-2 rounded-lg">
+                                    <span class="block text-blue-700 font-bold text-lg" id="count-x2">1</span>
+                                    <span class="text-blue-600 text-[10px]">Pieza x²</span>
+                                </div>
+                                <div class="bg-emerald-50 border border-emerald-200 p-2 rounded-lg">
+                                    <span class="block text-emerald-700 font-bold text-lg" id="count-x">5</span>
+                                    <span class="text-emerald-600 text-[10px]">Piezas x</span>
+                                </div>
+                                <div class="bg-amber-50 border border-amber-200 p-2 rounded-lg">
+                                    <span class="block text-amber-700 font-bold text-lg" id="count-units">6</span>
+                                    <span class="text-amber-600 text-[10px]">Unidades 1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 text-xs">
+                            <i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>
+                            <strong>Principio:</strong> El área total es la suma de todas las baldosas: <br>
+                            <span class="font-mono font-bold" id="formula-result">Área = x² + 5x + 6</span>
+                        </div>
+                    </div>
+
+                    <!-- Visualizador -->
+                    <div class="lg:col-span-8 flex flex-col space-y-4">
+                        <div class="bg-slate-900 text-white rounded-xl p-4 flex flex-col items-center justify-center min-h-[340px] relative overflow-hidden shadow-inner">
+                            <span class="absolute top-3 left-3 text-xs text-slate-400 font-mono flex items-center gap-1.5">
+                                <i class="fa-solid fa-eye text-ctp-gold"></i> Plano Geométrico del Rectángulo
+                            </span>
+                            
+                            <div id="tiles-grid" class="flex flex-col items-center justify-center gap-1.5 p-6 bg-slate-800/80 rounded-xl border border-slate-700 shadow-2xl transition-all duration-300 max-w-full overflow-auto">
+                            </div>
+
+                            <div class="mt-4 text-xs text-slate-300 text-center font-mono">
+                                Largo total = <span class="text-amber-400 font-bold" id="display-largo">(x + 3)</span> &nbsp;|&nbsp;
+                                Ancho total = <span class="text-emerald-400 font-bold" id="display-ancho">(x + 2)</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
+                                <h4 class="font-bold text-xs text-blue-900 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-ruler-combined text-blue-600"></i> Método 1: Multiplicación Directa
+                                </h4>
+                                <p class="text-xs text-blue-800 font-mono" id="calc-direct">
+                                    Área = (3 + 3) × (3 + 2) = 6 × 5 = <strong>30 cm²</strong>
+                                </p>
+                            </div>
+                            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
+                                <h4 class="font-bold text-xs text-emerald-900 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-cubes-stacked text-emerald-600"></i> Método 2: Valor Numérico del Polinomio
+                                </h4>
+                                <p class="text-xs text-emerald-800 font-mono" id="calc-poly">
+                                    Área = (3)² + 5(3) + 6 = 9 + 15 + 6 = <strong>30 cm²</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- MÓDULO 2: CLASIFICACIÓN Y TÉRMINOS SEMEJANTES -->
+        <!-- ========================================================================= -->
+        <section id="module-clasificacion" class="space-y-6 hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <span class="text-xs uppercase font-extrabold tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-md">Fundamentos de Álgebra</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Anatomía de Términos y Clasificación de Expresiones</h2>
+                    <p class="text-sm text-slate-600">Aprende a descomponer un término algebraico y agrupar términos semejantes de manera interactiva.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-microscope text-sky-600"></i> Descomponedor de Términos
+                        </h3>
+                        <p class="text-xs text-slate-600">Escribe o selecciona un término para ver sus 3 partes fundamentales:</p>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="inspectTerm('-9a^4', -9, 'a', 4)" class="px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg hover:bg-sky-50 hover:border-sky-300 font-mono font-bold text-slate-700">-9a⁴</button>
+                            <button onclick="inspectTerm('5x^2', 5, 'x', 2)" class="px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg hover:bg-sky-50 hover:border-sky-300 font-mono font-bold text-slate-700">5x²</button>
+                            <button onclick="inspectTerm('-7m^3', -7, 'm', 3)" class="px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg hover:bg-sky-50 hover:border-sky-300 font-mono font-bold text-slate-700">-7m³</button>
+                            <button onclick="inspectTerm('12y^5', 12, 'y', 5)" class="px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg hover:bg-sky-50 hover:border-sky-300 font-mono font-bold text-slate-700">12y⁵</button>
+                        </div>
+
+                        <div class="bg-slate-900 text-white p-6 rounded-xl text-center font-mono">
+                            <div class="text-3xl font-bold tracking-wider" id="term-display">
+                                <span class="text-rose-400" id="term-coef">-9</span><span class="text-amber-300" id="term-var">a</span><sup class="text-cyan-300 text-xl font-bold" id="term-exp">4</sup>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3 text-center text-xs">
+                            <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl">
+                                <span class="block text-rose-500 font-bold uppercase text-[10px]">1. Coeficiente</span>
+                                <span class="font-mono text-base font-bold text-rose-700" id="info-coef">-9</span>
+                                <p class="text-[10px] text-slate-500 mt-1">Número con su signo</p>
+                            </div>
+                            <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+                                <span class="block text-amber-500 font-bold uppercase text-[10px]">2. Variable</span>
+                                <span class="font-mono text-base font-bold text-amber-700" id="info-var">a</span>
+                                <p class="text-[10px] text-slate-500 mt-1">Letra o factor literal</p>
+                            </div>
+                            <div class="p-2.5 bg-cyan-50 border border-cyan-200 rounded-xl">
+                                <span class="block text-cyan-500 font-bold uppercase text-[10px]">3. Exponente</span>
+                                <span class="font-mono text-base font-bold text-cyan-700" id="info-exp">4</span>
+                                <p class="text-[10px] text-slate-500 mt-1">Potencia de la letra</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                            <h3 class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2 mb-3">
+                                <i class="fa-solid fa-list-ol text-sky-600"></i> Clasificación por Cantidad de Términos
+                            </h3>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-sky-700 block">Monomio (1 término)</strong>
+                                    <span class="font-mono text-slate-600">5x² o -7m³</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-sky-700 block">Binomio (2 términos)</strong>
+                                    <span class="font-mono text-slate-600">x + 4 o 2y - 5</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-sky-700 block">Trinomio (3 términos)</strong>
+                                    <span class="font-mono text-slate-600">4x² - 3x + 7</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-lg border border-slate-200">
+                                    <strong class="text-sky-700 block">Polinomio (4+ términos)</strong>
+                                    <span class="font-mono text-slate-600">2x³ - x² + 3x - 6</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-sky-50 to-blue-50 p-5 rounded-xl border border-sky-200">
+                            <h3 class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-wand-magic-sparkles text-sky-600"></i> Reductor de Términos Semejantes
+                            </h3>
+                            <p class="text-xs text-slate-600 mb-3">Expresión: <span class="font-mono font-bold text-slate-900 bg-white px-2 py-0.5 rounded border">5x² + 3x - 2x² + 7x - 4</span></p>
+                            
+                            <div class="space-y-2 text-xs">
+                                <button onclick="toggleStepReduccion()" id="btn-reduc-step" class="w-full py-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg shadow transition">
+                                    Ver Paso a Paso de Reducción
+                                </button>
+                                <div id="reduc-steps" class="hidden space-y-2 mt-2 font-mono">
+                                    <div class="bg-white p-2 rounded border border-sky-200 text-slate-700">
+                                        <strong>Paso 1 (Agrupar semejantes):</strong><br>
+                                        <span class="text-blue-600">(5x² - 2x²)</span> + <span class="text-emerald-600">(3x + 7x)</span> - 4
+                                    </div>
+                                    <div class="bg-white p-2 rounded border border-sky-200 text-slate-700">
+                                        <strong>Paso 2 (Operar coeficientes):</strong><br>
+                                        <span class="text-blue-600">(5 - 2)x²</span> + <span class="text-emerald-600">(3 + 7)x</span> - 4 = <strong class="text-slate-900 font-bold">3x² + 10x - 4</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- MÓDULO 3: SIMULADOR DE LEYES DE POTENCIAS -->
+        <!-- ========================================================================= -->
+        <section id="module-potencias" class="space-y-6 hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <span class="text-xs uppercase font-extrabold tracking-wider text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-md">Propiedades Exponenciales</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Laboratorio de Leyes de Potencias</h2>
+                    <p class="text-sm text-slate-600">Experimenta interactivamente con la multiplicación, división y potencia de una potencia para bases iguales.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded">Ley 1</span>
+                                <i class="fa-solid fa-xmark text-slate-400"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-base mt-2">Multiplicación de Igual Base</h3>
+                            <p class="text-xs text-slate-500 font-mono mt-1">aᵐ · aⁿ = aᵐ⁺ⁿ</p>
+                            
+                            <div class="mt-4 space-y-3">
+                                <div>
+                                    <label class="text-xs text-slate-600 font-medium">Exponente m: <span id="val-m1" class="font-bold">4</span></label>
+                                    <input type="range" id="range-m1" min="1" max="8" value="4" class="w-full accent-yellow-500" oninput="calcPowerMult()">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-600 font-medium">Exponente n: <span id="val-n1" class="font-bold">3</span></label>
+                                    <input type="range" id="range-n1" min="1" max="8" value="3" class="w-full accent-yellow-500" oninput="calcPowerMult()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-yellow-200 font-mono text-center">
+                            <div class="text-sm text-slate-500 mb-1" id="exp-mult-step">a⁴ · a³ = a⁴⁺³</div>
+                            <div class="text-2xl font-bold text-yellow-600" id="exp-mult-res">a⁷</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded">Ley 2</span>
+                                <i class="fa-solid fa-divide text-slate-400"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-base mt-2">División de Igual Base</h3>
+                            <p class="text-xs text-slate-500 font-mono mt-1">xᵐ / xⁿ = xᵐ⁻ⁿ</p>
+                            
+                            <div class="mt-4 space-y-3">
+                                <div>
+                                    <label class="text-xs text-slate-600 font-medium">Exponente numerador (m): <span id="val-m2" class="font-bold">8</span></label>
+                                    <input type="range" id="range-m2" min="2" max="10" value="8" class="w-full accent-blue-500" oninput="calcPowerDiv()">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-600 font-medium">Exponente denominador (n): <span id="val-n2" class="font-bold">3</span></label>
+                                    <input type="range" id="range-n2" min="1" max="7" value="3" class="w-full accent-blue-500" oninput="calcPowerDiv()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-blue-200 font-mono text-center">
+                            <div class="text-sm text-slate-500 mb-1" id="exp-div-step">x⁸ / x³ = x⁸⁻³</div>
+                            <div class="text-2xl font-bold text-blue-600" id="exp-div-res">x⁵</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-0.5 rounded">Ley 3</span>
+                                <i class="fa-solid fa-superscript text-slate-400"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-base mt-2">Potencia de una Potencia</h3>
+                            <p class="text-xs text-slate-500 font-mono mt-1">(pᵐ)ⁿ = pᵐ·ⁿ</p>
+                            
+                            <div class="mt-4 space-y-3">
+                                <div>
+                                    <label class="text-xs text-slate-600 font-medium">Exponente interior (m): <span id="val-m3" class="font-bold">2</span></label>
+                                    <input type="range" id="range-m3" min="1" max="5" value="2" class="w-full accent-purple-500" oninput="calcPowerPow()">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-slate-600 font-medium">Exponente exterior (n): <span id="val-n3" class="font-bold">4</span></label>
+                                    <input type="range" id="range-n3" min="1" max="5" value="4" class="w-full accent-purple-500" oninput="calcPowerPow()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-xl border border-purple-200 font-mono text-center">
+                            <div class="text-sm text-slate-500 mb-1" id="exp-pow-step">(p²)⁴ = p²·⁴</div>
+                            <div class="text-2xl font-bold text-purple-600" id="exp-pow-res">p⁸</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-rose-50 border-l-4 border-rose-500 rounded-r-xl text-xs text-rose-900 flex items-start gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-500 text-lg mt-0.5"></i>
+                    <div>
+                        <strong class="font-bold">¡Cuidado con bases diferentes!</strong>
+                        <p class="mt-0.5">Una ley de potencias <em>nunca</em> permite combinar bases diferentes. Por ejemplo: <span class="font-mono font-bold bg-white px-1.5 py-0.5 rounded border border-rose-200">x² · y³ ≠ x⁵</span>, ya que las bases x e y son completamente distintas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- MÓDULO 4: VALOR NUMÉRICO & STEAM -->
+        <!-- ========================================================================= -->
+        <section id="module-valor" class="space-y-6 hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <span class="text-xs uppercase font-extrabold tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">Evaluación Algebraica y Modelado</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Calculadora Guiada de Valor Numérico</h2>
+                    <p class="text-sm text-slate-600">Sigue la jerarquía de operaciones paso a paso y evalúa el sensor del prototipo STEAM del CTP de Cartagena.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-emerald-600"></i> Jerarquía de Evaluación
+                            </h3>
+                            <span class="font-mono text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">2x² - 3x + 1</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Selecciona el valor de x: <span id="num-val-x" class="text-emerald-600 font-bold font-mono">2</span></label>
+                            <input type="range" id="slider-num-x" min="-3" max="5" value="2" class="w-full accent-emerald-600" oninput="updateValNumerico()">
+                        </div>
+
+                        <div class="space-y-2 font-mono text-xs">
+                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex items-center justify-between">
+                                <span>1. Sustituir con paréntesis:</span>
+                                <span class="text-slate-800 font-bold" id="step1-num">2(2)² - 3(2) + 1</span>
+                            </div>
+                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex items-center justify-between">
+                                <span>2. Resolver potencias:</span>
+                                <span class="text-slate-800 font-bold" id="step2-num">2(4) - 6 + 1</span>
+                            </div>
+                            <div class="p-3 bg-white rounded-lg border border-slate-200 flex items-center justify-between">
+                                <span>3. Multiplicar:</span>
+                                <span class="text-slate-800 font-bold" id="step3-num">8 - 6 + 1</span>
+                            </div>
+                            <div class="p-3 bg-emerald-50 rounded-lg border border-emerald-300 flex items-center justify-between text-emerald-900 font-bold">
+                                <span>4. Resultado final:</span>
+                                <span class="text-lg" id="step4-num">3</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-slate-900 to-ctp-900 text-white p-5 rounded-xl border border-slate-700 space-y-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full font-bold uppercase">
+                                    <i class="fa-solid fa-microchip mr-1"></i> Desafío STEAM
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono">Sensor Prototipo</span>
+                            </div>
+                            <h3 class="font-bold text-lg text-white mt-2">Modelo de Distancia del Sensor</h3>
+                            <p class="text-xs text-slate-300 mt-1">Un sensor de ultrasonido registra la trayectoria con la expresión física:</p>
+                            
+                            <div class="my-3 p-3 bg-slate-800/90 rounded-lg border border-slate-600 text-center font-mono text-amber-300 text-lg font-bold">
+                                d = 2t² + 3t &nbsp;<span class="text-xs text-slate-400 font-normal">(d en metros, t en segundos)</span>
+                            </div>
+
+                            <div class="space-y-2 mt-4">
+                                <label class="text-xs text-slate-300 flex justify-between font-mono">
+                                    <span>Tiempo transcurrido (t):</span>
+                                    <span class="text-amber-300 font-bold text-sm" id="label-t">4 segundos</span>
+                                </label>
+                                <input type="range" id="slider-t" min="1" max="10" value="4" class="w-full accent-amber-400" oninput="updateSteamSensor()">
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/80 p-4 rounded-xl border border-slate-700 space-y-2 text-xs font-mono">
+                            <div class="text-slate-400">Cálculo en Tiempo Real:</div>
+                            <div class="text-slate-200" id="steam-calc">d = 2(4)² + 3(4) = 2(16) + 12 = 32 + 12</div>
+                            <div class="text-xl font-bold text-emerald-400 flex items-center justify-between pt-1 border-t border-slate-700">
+                                <span>Distancia Registrada:</span>
+                                <span id="steam-dist">44 metros</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- MÓDULO 5: PRODUCTOS NOTABLES -->
+        <!-- ========================================================================= -->
+        <section id="module-notables" class="space-y-6 hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <span class="text-xs uppercase font-extrabold tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Patrones Algebraicos</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Constructor de Productos Notables</h2>
+                    <p class="text-sm text-slate-600">Explora las 3 fórmulas fundamentales e identifica los términos a y b con desarrollo guiado.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                    <button onclick="setNotable('suma')" id="btn-notable-suma" class="p-4 rounded-xl border-2 border-purple-500 bg-purple-50 text-left transition hover:shadow-md">
+                        <span class="text-xs font-bold text-purple-700 block">1. Cuadrado de una Suma</span>
+                        <span class="font-mono text-sm font-bold text-slate-800 mt-1 block">(a + b)² = a² + 2ab + b²</span>
+                    </button>
+                    <button onclick="setNotable('dif')" id="btn-notable-dif" class="p-4 rounded-xl border-2 border-slate-200 bg-white text-left transition hover:shadow-md">
+                        <span class="text-xs font-bold text-slate-600 block">2. Cuadrado de una Diferencia</span>
+                        <span class="font-mono text-sm font-bold text-slate-800 mt-1 block">(a - b)² = a² - 2ab + b²</span>
+                    </button>
+                    <button onclick="setNotable('conj')" id="btn-notable-conj" class="p-4 rounded-xl border-2 border-slate-200 bg-white text-left transition hover:shadow-md">
+                        <span class="text-xs font-bold text-slate-600 block">3. Suma por Diferencia</span>
+                        <span class="font-mono text-sm font-bold text-slate-800 mt-1 block">(a + b)(a - b) = a² - b²</span>
+                    </button>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-5 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2" id="notable-title">
+                            <i class="fa-solid fa-shapes text-purple-600"></i> Cuadrado de una Suma
+                        </h3>
+                        
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Primer término (a):</label>
+                            <input type="text" id="notable-in-a" value="2y" class="w-full p-2 text-sm font-mono border border-slate-300 rounded-lg bg-white font-bold text-slate-800" oninput="renderNotable()">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 mb-1">Segundo término (b):</label>
+                            <input type="text" id="notable-in-b" value="5" class="w-full p-2 text-sm font-mono border border-slate-300 rounded-lg bg-white font-bold text-slate-800" oninput="renderNotable()">
+                        </div>
+
+                        <div class="p-3 bg-purple-50 border border-purple-200 rounded-lg text-xs text-purple-900">
+                            <strong>Consejo:</strong> En (2y - 5)², a = 2y y b = 5. El signo negativo ya está incorporado en la fórmula del cuadrado de una diferencia.
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-slate-900 text-white p-6 rounded-xl space-y-4 font-mono">
+                        <div class="text-xs text-slate-400 flex justify-between border-b border-slate-700 pb-2">
+                            <span>Desarrollo Formal Paso a Paso</span>
+                            <span class="text-purple-400 font-bold" id="notable-type-badge">Fórmula 1</span>
+                        </div>
+
+                        <div class="text-lg font-bold text-amber-300" id="notable-exp-original">
+                            (2y + 5)²
+                        </div>
+
+                        <div class="text-xs space-y-1.5 text-slate-300">
+                            <div><span class="text-slate-500">1. Fórmula:</span> <span id="notable-formula-txt">a² + 2ab + b²</span></div>
+                            <div><span class="text-slate-500">2. Sustitución:</span> <span id="notable-sub-txt">(2y)² + 2(2y)(5) + (5)²</span></div>
+                            <div class="pt-2 border-t border-slate-700 text-base font-bold text-emerald-400">
+                                <span class="text-slate-400 text-xs block font-normal">3. Resultado Simplificado:</span>
+                                <span id="notable-res-txt">4y² + 20y + 25</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- MÓDULO 6: PROYECTOS APLICADOS CTP CARTAGENA -->
+        <!-- ========================================================================= -->
+        <section id="module-proyectos" class="space-y-6 hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <span class="text-xs uppercase font-extrabold tracking-wider text-lime-600 bg-lime-50 px-2.5 py-1 rounded-md">Modelación Matemática Real</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Proyectos de Aplicación en Cartagena</h2>
+                    <p class="text-sm text-slate-600">Simula los dos problemas de ingeniería y diseño escolar extraídos de la guía oficial del CTP.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-md">Problema 19</span>
+                                <i class="fa-solid fa-palette text-slate-400"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-900 mt-2">Mural Cultural del CTP</h3>
+                            <p class="text-xs text-slate-600 mt-1">Dimensiones del mural: Largo = (x+4) m, Ancho = (x+2) m.</p>
+                            
+                            <div class="mt-4 p-3 bg-white rounded-lg border border-slate-200 font-mono text-xs space-y-1">
+                                <div class="text-slate-500">Expresión del Área:</div>
+                                <div class="font-bold text-blue-700">A = (x + 4)(x + 2) = x² + 6x + 8</div>
+                            </div>
+
+                            <div class="mt-4 space-y-2">
+                                <label class="text-xs font-semibold text-slate-700 flex justify-between font-mono">
+                                    <span>Variable x:</span>
+                                    <span class="text-blue-600 font-bold" id="mural-x-label">x = 3 metros</span>
+                                </label>
+                                <input type="range" id="mural-x-slider" min="1" max="8" value="3" class="w-full accent-blue-600" oninput="updateMuralSim()">
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl font-mono text-xs space-y-2">
+                            <div class="text-blue-900 font-bold">Cálculo de Pintura Requerida:</div>
+                            <div class="text-slate-700">Largo real = <span id="mural-largo">7 m</span> | Ancho real = <span id="mural-ancho">5 m</span></div>
+                            <div class="text-slate-700">Área = (3)² + 6(3) + 8 = 9 + 18 + 8 = <strong class="text-blue-800 text-sm" id="mural-area">35 m²</strong></div>
+                            <div class="text-[11px] text-slate-500 pt-1 border-t border-blue-200">
+                                💡 <em>Interpretación:</em> Se necesitan comprar materiales para cubrir exactamente <strong><span id="mural-interp">35</span> metros cuadrados</strong> de mural.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex flex-col justify-between space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-md">Problema 21</span>
+                                <i class="fa-solid fa-wheat-awn text-slate-400"></i>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-900 mt-2">Parcela Experimental de Cartagena</h3>
+                            <p class="text-xs text-slate-600 mt-1">Dimensiones del terreno: Largo = (x+5) m, Ancho = (x+2) m.</p>
+                            
+                            <div class="mt-4 p-3 bg-white rounded-lg border border-slate-200 font-mono text-xs space-y-1">
+                                <div class="text-slate-500">Expresión del Área:</div>
+                                <div class="font-bold text-emerald-700">A = (x + 5)(x + 2) = x² + 7x + 10</div>
+                            </div>
+
+                            <div class="mt-4 space-y-2">
+                                <label class="text-xs font-semibold text-slate-700 flex justify-between font-mono">
+                                    <span>Variable x:</span>
+                                    <span class="text-emerald-600 font-bold" id="parcela-x-label">x = 4 metros</span>
+                                </label>
+                                <input type="range" id="parcela-x-slider" min="1" max="8" value="4" class="w-full accent-emerald-600" oninput="updateParcelaSim()">
+                            </div>
+                        </div>
+
+                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl font-mono text-xs space-y-2">
+                            <div class="text-emerald-900 font-bold">Cálculo Agrícola y Costos:</div>
+                            <div class="text-slate-700">Largo real = <span id="parcela-largo">9 m</span> | Ancho real = <span id="parcela-ancho">6 m</span></div>
+                            <div class="text-slate-700">Área = (4)² + 7(4) + 10 = 16 + 28 + 10 = <strong class="text-emerald-800 text-sm" id="parcela-area">54 m²</strong></div>
+                            <div class="text-slate-800 pt-1 border-t border-emerald-200 flex justify-between items-center">
+                                <span>Costo suelo (₡1,500/m²):</span>
+                                <span class="font-bold text-emerald-700" id="parcela-costo">₡81,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================================= -->
+        <!-- MÓDULO 7: RETO EVALUATIVO Y GENERADOR DE REPORTE -->
+        <!-- ========================================================================= -->
+        <section id="module-quiz" class="space-y-6 hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md">Evaluación Formativa</span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Desafío Evaluativo - Actividad Integrada</h2>
+                        <p class="text-sm text-slate-600">Responde los 6 ítems oficiales de selección y verifica tu nivel de logro con la rúbrica institucional.</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-400 block font-mono">Puntuación:</span>
+                        <span class="text-2xl font-extrabold text-ctp-600 font-mono" id="quiz-score-display">0 / 6</span>
+                    </div>
+                </div>
+
+                <div class="space-y-6" id="quiz-container">
+                    <!-- Q1 -->
+                    <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3" id="q-card-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 font-mono">Ítem 1</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded status-badge hidden"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-800">1. La expresión <span class="font-mono text-ctp-600 bg-white px-2 py-0.5 rounded border">3x² - 5x + 8</span> se clasifica como:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-medium">
+                            <button onclick="checkAnswer(1, 'A', false)" class="q-opt-1 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">A) Monomio</button>
+                            <button onclick="checkAnswer(1, 'B', false)" class="q-opt-1 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">B) Binomio</button>
+                            <button onclick="checkAnswer(1, 'C', true)" class="q-opt-1 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">C) Trinomio</button>
+                        </div>
+                        <div class="text-xs text-slate-600 hidden feedback-box font-mono p-2 bg-white rounded border"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3" id="q-card-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 font-mono">Ítem 2</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded status-badge hidden"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-800">2. El coeficiente del término <span class="font-mono text-ctp-600 bg-white px-2 py-0.5 rounded border">-7m³</span> corresponde a:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-medium">
+                            <button onclick="checkAnswer(2, 'A', true)" class="q-opt-2 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">A) -7</button>
+                            <button onclick="checkAnswer(2, 'B', false)" class="q-opt-2 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">B) 3</button>
+                            <button onclick="checkAnswer(2, 'C', false)" class="q-opt-2 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">C) m</button>
+                        </div>
+                        <div class="text-xs text-slate-600 hidden feedback-box font-mono p-2 bg-white rounded border"></div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3" id="q-card-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 font-mono">Ítem 3</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded status-badge hidden"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-800">3. El resultado de multiplicar <span class="font-mono text-ctp-600 bg-white px-2 py-0.5 rounded border">a⁴ · a³</span> corresponde a:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-medium">
+                            <button onclick="checkAnswer(3, 'A', true)" class="q-opt-3 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">A) a⁷</button>
+                            <button onclick="checkAnswer(3, 'B', false)" class="q-opt-3 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">B) a¹²</button>
+                            <button onclick="checkAnswer(3, 'C', false)" class="q-opt-3 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">C) 2a⁷</button>
+                        </div>
+                        <div class="text-xs text-slate-600 hidden feedback-box font-mono p-2 bg-white rounded border"></div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3" id="q-card-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 font-mono">Ítem 4</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded status-badge hidden"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-800">4. Si <span class="font-mono font-bold">x = 3</span>, el valor numérico de <span class="font-mono text-ctp-600 bg-white px-2 py-0.5 rounded border">2x + 5</span> es:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-medium">
+                            <button onclick="checkAnswer(4, 'A', false)" class="q-opt-4 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">A) 10</button>
+                            <button onclick="checkAnswer(4, 'B', true)" class="q-opt-4 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">B) 11</button>
+                            <button onclick="checkAnswer(4, 'C', false)" class="q-opt-4 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">C) 16</button>
+                        </div>
+                        <div class="text-xs text-slate-600 hidden feedback-box font-mono p-2 bg-white rounded border"></div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3" id="q-card-5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 font-mono">Ítem 5</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded status-badge hidden"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-800">5. El desarrollo del producto notable <span class="font-mono text-ctp-600 bg-white px-2 py-0.5 rounded border">(x + 4)²</span> corresponde a:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-medium">
+                            <button onclick="checkAnswer(5, 'A', false)" class="q-opt-5 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">A) x² + 16</button>
+                            <button onclick="checkAnswer(5, 'B', false)" class="q-opt-5 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">B) x² + 4x + 16</button>
+                            <button onclick="checkAnswer(5, 'C', true)" class="q-opt-5 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">C) x² + 8x + 16</button>
+                        </div>
+                        <div class="text-xs text-slate-600 hidden feedback-box font-mono p-2 bg-white rounded border"></div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3" id="q-card-6">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-500 font-mono">Ítem 6</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded status-badge hidden"></span>
+                        </div>
+                        <p class="text-sm font-semibold text-slate-800">6. El resultado de <span class="font-mono text-ctp-600 bg-white px-2 py-0.5 rounded border">(y + 5)(y - 5)</span> corresponde a:</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-medium">
+                            <button onclick="checkAnswer(6, 'A', true)" class="q-opt-6 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">A) y² - 25</button>
+                            <button onclick="checkAnswer(6, 'B', false)" class="q-opt-6 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">B) y² + 25</button>
+                            <button onclick="checkAnswer(6, 'C', false)" class="q-opt-6 p-2.5 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-left transition">C) y² - 10y + 25</button>
+                        </div>
+                        <div class="text-xs text-slate-600 hidden feedback-box font-mono p-2 bg-white rounded border"></div>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-xs text-slate-500">
+                        <i class="fa-solid fa-graduation-cap text-ctp-600 mr-1"></i> Departamento de Matemática - Prof. Román Ruiz C.
+                    </div>
+                    <button onclick="generateReport()" class="px-6 py-3 bg-gradient-to-r from-ctp-700 to-ctp-600 hover:from-ctp-800 hover:to-ctp-700 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf"></i> Generar Reporte de Laboratorio
+                    </button>
+                </div>
+
+                <!-- Modal de Reporte -->
+                <div id="report-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 border border-slate-200">
+                        <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-lg">Comprobante de Logro Académico</h3>
+                                <p class="text-xs text-slate-500">CTP de Cartagena - Matemática 8.° Año</p>
+                            </div>
+                            <button onclick="closeReport()" class="text-slate-400 hover:text-slate-600 text-lg">&times;</button>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2 text-xs font-mono" id="report-content"></div>
+
+                        <div class="flex gap-2">
+                            <button onclick="window.print()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-print"></i> Imprimir / Guardar PDF
+                            </button>
+                            <button onclick="closeReport()" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition">
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        <p>CTP de Cartagena &bull; Departamento de Matemática &bull; Material Interactivo para Octavo Año</p>
+    </footer>
+
+    <script>
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function playBeep(freq = 520, duration = 0.12, type = 'sine') {
+            if (!soundEnabled) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e){}
+        }
+
+        document.getElementById('soundToggle').addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundToggle');
+            if (soundEnabled) {
+                btn.innerHTML = '<i class="fa-solid fa-volume-high text-sm"></i>';
+                btn.classList.remove('text-slate-400');
+                btn.classList.add('text-amber-300');
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark text-sm"></i>';
+                btn.classList.remove('text-amber-300');
+                btn.classList.add('text-slate-400');
+            }
+        });
+
+        function switchTab(tabId) {
+            playBeep(440, 0.08);
+            document.querySelectorAll('section[id^="module-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`module-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-amber-400', 'bg-white/10', 'text-white');
+                btn.classList.add('border-transparent', 'text-slate-300');
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.classList.add('border-amber-400', 'bg-white/10', 'text-white');
+            activeBtn.classList.remove('border-transparent', 'text-slate-300');
+
+            if (tabId === 'tiles') updateTiles();
+        }
+
+        function updateTiles() {
+            const a = parseInt(document.getElementById('slider-a').value);
+            const b = parseInt(document.getElementById('slider-b').value);
+            const xVal = parseInt(document.getElementById('slider-x').value);
+
+            document.getElementById('label-a').innerText = a;
+            document.getElementById('label-b').innerText = b;
+            document.getElementById('label-x').innerText = `x = ${xVal} cm`;
+            document.getElementById('factor-1').innerText = `(x + ${a})`;
+            document.getElementById('factor-2').innerText = `(x + ${b})`;
+            document.getElementById('display-largo').innerText = `(x + ${a})`;
+            document.getElementById('display-ancho').innerText = `(x + ${b})`;
+
+            const middleTerm = a + b;
+            const constantTerm = a * b;
+
+            document.getElementById('count-x2').innerText = '1';
+            document.getElementById('count-x').innerText = middleTerm;
+            document.getElementById('count-units').innerText = constantTerm;
+            document.getElementById('formula-result').innerText = `Área = x² + ${middleTerm}x + ${constantTerm}`;
+
+            const container = document.getElementById('tiles-grid');
+            container.innerHTML = '';
+
+            const rowTop = document.createElement('div');
+            rowTop.className = 'flex gap-1.5 items-end';
+
+            const tileX2 = document.createElement('div');
+            tileX2.className = 'w-24 h-24 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-white shadow-lg text-lg border border-blue-400 tile-anim';
+            tileX2.innerText = 'x²';
+            rowTop.appendChild(tileX2);
+
+            for (let i = 0; i < a; i++) {
+                const barX = document.createElement('div');
+                barX.className = 'w-10 h-24 bg-emerald-500 rounded-md flex items-center justify-center font-bold text-white shadow text-xs border border-emerald-400 tile-anim';
+                barX.innerText = 'x';
+                rowTop.appendChild(barX);
+            }
+            container.appendChild(rowTop);
+
+            for (let j = 0; j < b; j++) {
+                const rowBottom = document.createElement('div');
+                rowBottom.className = 'flex gap-1.5';
+
+                const barY = document.createElement('div');
+                barY.className = 'w-24 h-10 bg-emerald-500 rounded-md flex items-center justify-center font-bold text-white shadow text-xs border border-emerald-400 tile-anim';
+                barY.innerText = 'x';
+                rowBottom.appendChild(barY);
+
+                for (let i = 0; i < a; i++) {
+                    const unit = document.createElement('div');
+                    unit.className = 'w-10 h-10 bg-amber-400 rounded-md flex items-center justify-center font-bold text-slate-900 shadow-sm text-xs border border-amber-300 tile-anim';
+                    unit.innerText = '1';
+                    rowBottom.appendChild(unit);
+                }
+                container.appendChild(rowBottom);
+            }
+
+            const largoReal = xVal + a;
+            const anchoReal = xVal + b;
+            const directArea = largoReal * anchoReal;
+            document.getElementById('calc-direct').innerHTML = `Área = (${xVal} + ${a}) × (${xVal} + ${b}) = ${largoReal} × ${anchoReal} = <strong>${directArea} cm²</strong>`;
+
+            const polyArea = (xVal * xVal) + (middleTerm * xVal) + constantTerm;
+            document.getElementById('calc-poly').innerHTML = `Área = (${xVal})² + ${middleTerm}(${xVal}) + ${constantTerm} = ${xVal*xVal} + ${middleTerm*xVal} + ${constantTerm} = <strong>${polyArea} cm²</strong>`;
+        }
+
+        function inspectTerm(termStr, coef, variable, exp) {
+            playBeep(580, 0.1);
+            document.getElementById('term-coef').innerText = coef;
+            document.getElementById('term-var').innerText = variable;
+            document.getElementById('term-exp').innerText = exp;
+
+            document.getElementById('info-coef').innerText = coef;
+            document.getElementById('info-var').innerText = variable;
+            document.getElementById('info-exp').innerText = exp;
+        }
+
+        function toggleStepReduccion() {
+            playBeep(500, 0.1);
+            const box = document.getElementById('reduc-steps');
+            const btn = document.getElementById('btn-reduc-step');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                btn.innerText = 'Ocultar Paso a Paso';
+            } else {
+                box.classList.add('hidden');
+                btn.innerText = 'Ver Paso a Paso de Reducción';
+            }
+        }
+
+        function calcPowerMult() {
+            const m = parseInt(document.getElementById('range-m1').value);
+            const n = parseInt(document.getElementById('range-n1').value);
+            document.getElementById('val-m1').innerText = m;
+            document.getElementById('val-n1').innerText = n;
+            document.getElementById('exp-mult-step').innerText = `a^${m} · a^${n} = a^(${m}+${n})`;
+            document.getElementById('exp-mult-res').innerText = `a^${m + n}`;
+        }
+
+        function calcPowerDiv() {
+            let m = parseInt(document.getElementById('range-m2').value);
+            let n = parseInt(document.getElementById('range-n2').value);
+            if (n >= m) {
+                n = m - 1;
+                document.getElementById('range-n2').value = n;
+            }
+            document.getElementById('val-m2').innerText = m;
+            document.getElementById('val-n2').innerText = n;
+            document.getElementById('exp-div-step').innerText = `x^${m} / x^${n} = x^(${m}-${n})`;
+            document.getElementById('exp-div-res').innerText = `x^${m - n}`;
+        }
+
+        function calcPowerPow() {
+            const m = parseInt(document.getElementById('range-m3').value);
+            const n = parseInt(document.getElementById('range-n3').value);
+            document.getElementById('val-m3').innerText = m;
+            document.getElementById('val-n3').innerText = n;
+            document.getElementById('exp-pow-step').innerText = `(p^${m})^${n} = p^(${m}·${n})`;
+            document.getElementById('exp-pow-res').innerText = `p^${m * n}`;
+        }
+
+        function updateValNumerico() {
+            const x = parseInt(document.getElementById('slider-num-x').value);
+            document.getElementById('num-val-x').innerText = x;
+
+            const xSq = x * x;
+            const term1 = 2 * xSq;
+            const term2 = 3 * x;
+            const finalRes = term1 - term2 + 1;
+
+            document.getElementById('step1-num').innerText = `2(${x})² - 3(${x}) + 1`;
+            document.getElementById('step2-num').innerText = `2(${xSq}) - ${term2} + 1`;
+            document.getElementById('step3-num').innerText = `${term1} - ${term2} + 1`;
+            document.getElementById('step4-num').innerText = `${finalRes}`;
+        }
+
+        function updateSteamSensor() {
+            const t = parseInt(document.getElementById('slider-t').value);
+            document.getElementById('label-t').innerText = `${t} segundos`;
+            const dist = 2 * (t * t) + (3 * t);
+            document.getElementById('steam-calc').innerText = `d = 2(${t})² + 3(${t}) = 2(${t*t}) + ${3*t} = ${2*t*t} + ${3*t}`;
+            document.getElementById('steam-dist').innerText = `${dist} metros`;
+        }
+
+        let currentNotable = 'suma';
+
+        function setNotable(type) {
+            playBeep(650, 0.08);
+            currentNotable = type;
+            const btns = {
+                'suma': document.getElementById('btn-notable-suma'),
+                'dif': document.getElementById('btn-notable-dif'),
+                'conj': document.getElementById('btn-notable-conj')
+            };
+
+            for (let key in btns) {
+                if (key === type) {
+                    btns[key].className = 'p-4 rounded-xl border-2 border-purple-500 bg-purple-50 text-left transition hover:shadow-md';
+                } else {
+                    btns[key].className = 'p-4 rounded-xl border-2 border-slate-200 bg-white text-left transition hover:shadow-md';
+                }
+            }
+            renderNotable();
+        }
+
+        function renderNotable() {
+            const a = document.getElementById('notable-in-a').value.trim() || 'a';
+            const b = document.getElementById('notable-in-b').value.trim() || 'b';
+
+            if (currentNotable === 'suma') {
+                document.getElementById('notable-title').innerHTML = '<i class="fa-solid fa-plus text-purple-600"></i> Cuadrado de una Suma';
+                document.getElementById('notable-type-badge').innerText = '(a + b)²';
+                document.getElementById('notable-exp-original').innerText = `(${a} + ${b})²`;
+                document.getElementById('notable-formula-txt').innerText = 'a² + 2ab + b²';
+                document.getElementById('notable-sub-txt').innerText = `(${a})² + 2(${a})(${b}) + (${b})²`;
+                document.getElementById('notable-res-txt').innerText = `(${a})² + 2·(${a})·(${b}) + (${b})²`;
+            } else if (currentNotable === 'dif') {
+                document.getElementById('notable-title').innerHTML = '<i class="fa-solid fa-minus text-purple-600"></i> Cuadrado de una Diferencia';
+                document.getElementById('notable-type-badge').innerText = '(a - b)²';
+                document.getElementById('notable-exp-original').innerText = `(${a} - ${b})²`;
+                document.getElementById('notable-formula-txt').innerText = 'a² - 2ab + b²';
+                document.getElementById('notable-sub-txt').innerText = `(${a})² - 2(${a})(${b}) + (${b})²`;
+                document.getElementById('notable-res-txt').innerText = `(${a})² - 2·(${a})·(${b}) + (${b})²`;
+            } else {
+                document.getElementById('notable-title').innerHTML = '<i class="fa-solid fa-xmark text-purple-600"></i> Suma por Diferencia';
+                document.getElementById('notable-type-badge').innerText = '(a + b)(a - b)';
+                document.getElementById('notable-exp-original').innerText = `(${a} + ${b})(${a} - ${b})`;
+                document.getElementById('notable-formula-txt').innerText = 'a² - b²';
+                document.getElementById('notable-sub-txt').innerText = `(${a})² - (${b})²`;
+                document.getElementById('notable-res-txt').innerText = `(${a})² - (${b})²`;
+            }
+        }
+
+        function updateMuralSim() {
+            const x = parseInt(document.getElementById('mural-x-slider').value);
+            document.getElementById('mural-x-label').innerText = `x = ${x} metros`;
+            const largo = x + 4;
+            const ancho = x + 2;
+            const area = (x * x) + (6 * x) + 8;
+            document.getElementById('mural-largo').innerText = `${largo} m`;
+            document.getElementById('mural-ancho').innerText = `${ancho} m`;
+            document.getElementById('mural-area').innerText = `${area} m²`;
+            document.getElementById('mural-interp').innerText = `${area}`;
+        }
+
+        function updateParcelaSim() {
+            const x = parseInt(document.getElementById('parcela-x-slider').value);
+            document.getElementById('parcela-x-label').innerText = `x = ${x} metros`;
+            const largo = x + 5;
+            const ancho = x + 2;
+            const area = (x * x) + (7 * x) + 10;
+            const costo = area * 1500;
+            document.getElementById('parcela-largo').innerText = `${largo} m`;
+            document.getElementById('parcela-ancho').innerText = `${ancho} m`;
+            document.getElementById('parcela-area').innerText = `${area} m²`;
+            document.getElementById('parcela-costo').innerText = `₡${costo.toLocaleString('es-CR')}`;
+        }
+
+        let quizAnswers = { 1: null, 2: null, 3: null, 4: null, 5: null, 6: null };
+
+        const feedbacks = {
+            1: { correct: '¡Excelente! Tiene 3 términos (3x², -5x, 8), por tanto es un trinomio.', wrong: 'Incorrecto. Recuerda que los signos + y - separan 3 términos distintos.' },
+            2: { correct: '¡Correcto! El coeficiente numérico incluye su signo negativo (-7).', wrong: 'Incorrecto. La variable es m y el exponente es 3; el coeficiente es -7.' },
+            3: { correct: '¡Muy bien! En multiplicación de potencias de igual base se suman exponentes: 4 + 3 = 7.', wrong: 'Recuerda que no se multiplican los exponentes en producto de bases iguales.' },
+            4: { correct: '¡Correcto! 2(3) + 5 = 6 + 5 = 11.', wrong: 'Verifica la sustitución: 2·3 = 6, y luego sumas 5 = 11.' },
+            5: { correct: '¡Excelente! (x + 4)² = x² + 2(x)(4) + 4² = x² + 8x + 16.', wrong: 'Recuerda que no es solo elevar cada uno; falta el término doble central: 2·x·4 = 8x.' },
+            6: { correct: '¡Correcto! Suma por diferencia: y² - 5² = y² - 25.', wrong: 'Recuerda la fórmula de binomios conjugados: (a+b)(a-b) = a² - b².' }
+        };
+
+        function checkAnswer(qNum, opt, isCorrect) {
+            if (quizAnswers[qNum] !== null) return;
+            quizAnswers[qNum] = isCorrect;
+
+            const card = document.getElementById(`q-card-${qNum}`);
+            const badge = card.querySelector('.status-badge');
+            const feedback = card.querySelector('.feedback-box');
+            const btns = card.querySelectorAll(`.q-opt-${qNum}`);
+
+            btns.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-70', 'cursor-not-allowed');
+            });
+
+            badge.classList.remove('hidden');
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                playBeep(880, 0.15);
+                badge.className = 'text-xs font-semibold px-2 py-0.5 rounded status-badge bg-emerald-100 text-emerald-700 border border-emerald-200';
+                badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Correcto (+1)';
+                feedback.innerHTML = `<span class="text-emerald-700 font-bold">✓</span> ${feedbacks[qNum].correct}`;
+            } else {
+                playBeep(220, 0.25, 'sawtooth');
+                badge.className = 'text-xs font-semibold px-2 py-0.5 rounded status-badge bg-rose-100 text-rose-700 border border-rose-200';
+                badge.innerHTML = '<i class="fa-solid fa-xmark mr-1"></i> Incorrecto';
+                feedback.innerHTML = `<span class="text-rose-700 font-bold">✗</span> ${feedbacks[qNum].wrong}`;
+            }
+
+            const score = Object.values(quizAnswers).filter(v => v === true).length;
+            document.getElementById('quiz-score-display').innerText = `${score} / 6`;
+        }
+
+        function generateReport() {
+            playBeep(700, 0.1);
+            const name = document.getElementById('studentName').value.trim() || 'Estudiante CTP Cartagena';
+            const section = document.getElementById('studentSection').value.trim() || '8-X';
+            const score = Object.values(quizAnswers).filter(v => v === true).length;
+            const answered = Object.values(quizAnswers).filter(v => v !== null).length;
+
+            let nivel = 'Inicial';
+            let colorNivel = 'text-amber-600';
+            if (score >= 5) {
+                nivel = 'Logrado (Avanzado)';
+                colorNivel = 'text-emerald-600';
+            } else if (score >= 3) {
+                nivel = 'Intermedio';
+                colorNivel = 'text-blue-600';
+            }
+
+            const now = new Date().toLocaleDateString('es-CR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' });
+
+            document.getElementById('report-content').innerHTML = `
+                <div class="border-b border-slate-200 pb-2">
+                    <div class="text-slate-800 font-bold text-sm">Colegio Técnico Profesional de Cartagena</div>
+                    <div class="text-[11px] text-slate-500">Departamento de Matemática &bull; Prof. Román Ruiz C.</div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-700 py-1">
+                    <div><strong>Estudiante:</strong> ${name}</div>
+                    <div><strong>Sección:</strong> ${section}</div>
+                    <div><strong>Fecha:</strong> ${now}</div>
+                    <div><strong>Ítems Resueltos:</strong> ${answered} de 6</div>
+                </div>
+                <div class="bg-white p-3 rounded-lg border border-slate-200 text-center">
+                    <span class="text-[10px] text-slate-400 block uppercase">Puntaje Obtenido</span>
+                    <span class="text-2xl font-extrabold text-ctp-700 font-mono">${score} / 6</span>
+                    <div class="text-xs font-bold ${colorNivel} mt-1">Nivel de Desempeño: ${nivel}</div>
+                </div>
+                <div class="text-[10px] text-slate-500 leading-tight">
+                    * Este registro valida la interacción en los laboratorios de bloques de área, leyes de potencias, valor numérico STEAM y productos notables de 8.° año.
+                </div>
+            `;
+
+            document.getElementById('report-modal').classList.remove('hidden');
+        }
+
+        function closeReport() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateTiles();
+            calcPowerMult();
+            calcPowerDiv();
+            calcPowerPow();
+            updateValNumerico();
+            updateSteamSensor();
+            renderNotable();
+            updateMuralSim();
+            updateParcelaSim();
+        });
+    </script>
+</body>
+</html>
